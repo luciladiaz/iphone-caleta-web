@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="iPhone Caleta — iPhones usados y sellados verificados. Atención personalizada. Envíos a todo el país." />
+  <meta name="keywords" content="iPhone usado Argentina, comprar iPhone Caleta Olivia, iPhone verificado, Santa Cruz Patagonia" />
+  <meta property="og:title" content="iPhone Caleta — iPhones verificados" />
+  <meta property="og:description" content="Equipos verificados y atención personalizada en cada venta. Envíos a todo el país." />
+  <meta property="og:type" content="website" />
+  <title>iPhone Caleta — iPhones verificados</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ── Tokens ── */
+    :root {
+      --bg:       #000000;
+      --s1:       #0d0d0d;
+      --s2:       #141414;
+      --s3:       #1c1c1e;
+      --s4:       #2c2c2e;
+      --border:   #2c2c2e;
+      --text:     #ffffff;
+      --text2:    rgba(235,235,245,.8);
+      --text3:    #86868b;
+      --gold:     #c9a96e;
+      --gold2:    #e0c47a;
+      --green:    #30d158;
+      --radius:   16px;
+      --radius-s: 10px;
+      --font:     'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --wa:       #25D366;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Navbar ── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(0,0,0,.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      height: 60px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; }
+    .nav-logo svg { width: 22px; height: 22px; fill: white; }
+    .nav-brand { font-size: 15px; font-weight: 700; letter-spacing: -.3px; }
+    .nav-links { display: flex; align-items: center; gap: 28px; }
+    .nav-links a { font-size: 13px; color: var(--text3); font-weight: 500; transition: color .2s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      background: var(--wa); color: #fff;
+      padding: 8px 18px; border-radius: 99px;
+      font-size: 13px; font-weight: 600;
+      display: flex; align-items: center; gap: 6px;
+      transition: opacity .2s;
+      white-space: nowrap;
+    }
+    .nav-cta:hover { opacity: .85; }
+    .nav-mobile-btn { display: none; background: none; border: none; color: var(--text); cursor: pointer; }
+    .nav-mobile-menu {
+      display: none; position: fixed; top: 60px; left: 0; right: 0; bottom: 0;
+      background: var(--bg); z-index: 99;
+      flex-direction: column; align-items: center; justify-content: center; gap: 32px;
+    }
+    .nav-mobile-menu.open { display: flex; }
+    .nav-mobile-menu a { font-size: 22px; font-weight: 600; }
+
+    /* ── Hero ── */
+    .hero {
+      min-height: 100svh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 80px 24px 60px;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: -200px; left: 50%; transform: translateX(-50%);
+      width: 600px; height: 600px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(201,169,110,.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(201,169,110,.1); border: 1px solid rgba(201,169,110,.3);
+      color: var(--gold); padding: 5px 14px; border-radius: 99px;
+      font-size: 12px; font-weight: 600; letter-spacing: .3px;
+      margin-bottom: 28px;
+    }
+    .hero-tag::before { content: '●'; font-size: 8px; animation: blink 2s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    .hero h1 {
+      font-size: clamp(36px, 7vw, 72px);
+      font-weight: 800; letter-spacing: -2px; line-height: 1.05;
+      max-width: 780px; margin-bottom: 20px;
+    }
+    .hero h1 span { color: var(--gold); }
+    .hero-sub {
+      font-size: clamp(15px, 2vw, 18px);
+      color: var(--text2); max-width: 520px;
+      margin: 0 auto 40px; line-height: 1.7; font-weight: 400;
+    }
+    .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+    .btn-wa {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--wa); color: #fff;
+      padding: 14px 28px; border-radius: 99px;
+      font-size: 15px; font-weight: 700;
+      transition: transform .2s, opacity .2s;
+    }
+    .btn-wa:hover { transform: translateY(-2px); opacity: .92; }
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: transparent; color: var(--text);
+      border: 1px solid var(--border);
+      padding: 14px 28px; border-radius: 99px;
+      font-size: 15px; font-weight: 600;
+      transition: border-color .2s, background .2s;
+    }
+    .btn-outline:hover { border-color: var(--gold); background: rgba(201,169,110,.06); }
+
+    /* ── Stats Bar ── */
+    .stats {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--s1);
+      padding: 24px;
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+    }
+    .stat-item {
+      text-align: center; padding: 8px 16px;
+      border-right: 1px solid var(--border);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-num { font-size: 26px; font-weight: 800; color: var(--gold); letter-spacing: -1px; }
+    .stat-label { font-size: 11px; color: var(--text3); margin-top: 2px; text-transform: uppercase; letter-spacing: .5px; }
+
+    /* ── Section base ── */
+    section { padding: 80px 24px; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .section-tag {
+      font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--gold);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(26px, 4vw, 42px);
+      font-weight: 800; letter-spacing: -1px; line-height: 1.1;
+      margin-bottom: 16px;
+    }
+    .section-sub { font-size: 16px; color: var(--text2); max-width: 560px; line-height: 1.7; }
+
+    /* ── Stock ── */
+    .stock { background: var(--s1); }
+    .stock-header { margin-bottom: 48px; }
+    .stock-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 16px; }
+
+    /* ── !! EDITAR PRECIOS Y MODELOS ACÁ !! ── */
+    .phone-card {
+      background: var(--s3); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 24px;
+      display: flex; flex-direction: column; gap: 16px;
+      transition: border-color .2s, transform .2s;
+      position: relative; overflow: hidden;
+    }
+    .phone-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--gold), var(--gold2));
+    }
+    .phone-card:hover { border-color: var(--gold); transform: translateY(-3px); }
+    .phone-card.sold-out { opacity: .5; pointer-events: none; }
+    .phone-badge {
+      position: absolute; top: 14px; right: 14px;
+      font-size: 9px; font-weight: 700; letter-spacing: .8px;
+      text-transform: uppercase; padding: 3px 8px; border-radius: 99px;
+    }
+    .badge-disponible { background: rgba(48,209,88,.15); color: var(--green); border: 1px solid rgba(48,209,88,.3); }
+    .badge-ultimo { background: rgba(255,159,10,.15); color: #ff9f0a; border: 1px solid rgba(255,159,10,.3); }
+    .badge-sellado { background: rgba(201,169,110,.15); color: var(--gold); border: 1px solid rgba(201,169,110,.4); }
+    .phone-icon { font-size: 32px; }
+    .phone-model { font-size: 18px; font-weight: 700; }
+    .phone-storage { font-size: 12px; color: var(--text3); margin-top: 2px; }
+    .phone-specs { display: flex; flex-direction: column; gap: 4px; }
+    .phone-spec { font-size: 12px; color: var(--text2); display: flex; align-items: center; gap: 6px; }
+    .phone-spec::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+    .phone-price { margin-top: auto; }
+    .price-from { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: .5px; }
+    .price-val { font-size: 22px; font-weight: 800; color: var(--gold); }
+    .phone-cta {
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      background: var(--wa); color: #fff;
+      padding: 10px; border-radius: var(--radius-s);
+      font-size: 13px; font-weight: 600;
+      transition: opacity .2s;
+    }
+    .phone-cta:hover { opacity: .85; }
+    .stock-note {
+      margin-top: 32px; text-align: center;
+      font-size: 13px; color: var(--text3);
+    }
+    .stock-note a { color: var(--gold); }
+
+    /* ── Por qué ── */
+    .why { background: var(--bg); }
+    .why-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; margin-top: 48px; }
+    .why-card {
+      background: var(--s2); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 28px;
+      transition: border-color .2s;
+    }
+    .why-card:hover { border-color: rgba(201,169,110,.4); }
+    .why-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      background: rgba(201,169,110,.1); border: 1px solid rgba(201,169,110,.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; margin-bottom: 16px;
+    }
+    .why-title { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .why-desc { font-size: 13px; color: var(--text3); line-height: 1.7; }
+
+    /* ── Proceso ── */
+    .proceso { background: var(--s1); }
+    .proceso-steps { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0; margin-top: 48px; position: relative; }
+    .proceso-step { padding: 0 24px 0 0; position: relative; }
+    .step-num {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--gold); color: #000;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; font-weight: 800; margin-bottom: 16px;
+      flex-shrink: 0;
+    }
+    .step-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+    .step-desc { font-size: 12px; color: var(--text3); line-height: 1.6; }
+
+    /* ── Testimonios ── */
+    .testi { background: var(--bg); }
+    .testi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-top: 48px; }
+    .testi-card {
+      background: var(--s2); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 28px;
+    }
+    .testi-stars { color: var(--gold); font-size: 14px; margin-bottom: 14px; letter-spacing: 2px; }
+    .testi-text { font-size: 14px; color: var(--text2); line-height: 1.7; margin-bottom: 20px; font-style: italic; }
+    .testi-author { display: flex; align-items: center; gap: 10px; }
+    .testi-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--s4); display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+    }
+    .testi-name { font-size: 13px; font-weight: 600; }
+    .testi-loc { font-size: 11px; color: var(--text3); }
+
+    /* ── FAQ ── */
+    .faq { background: var(--s1); }
+    .faq-list { margin-top: 48px; display: flex; flex-direction: column; gap: 2px; }
+    .faq-item {
+      border: 1px solid var(--border); border-radius: var(--radius-s);
+      overflow: hidden; transition: border-color .2s;
+    }
+    .faq-item.open { border-color: rgba(201,169,110,.4); }
+    .faq-q {
+      width: 100%; background: var(--s2); border: none;
+      color: var(--text); font-family: var(--font);
+      padding: 18px 20px; text-align: left; cursor: pointer;
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 14px; font-weight: 600; gap: 12px;
+    }
+    .faq-q:hover { background: var(--s3); }
+    .faq-arrow { font-size: 18px; color: var(--gold); transition: transform .25s; flex-shrink: 0; }
+    .faq-item.open .faq-arrow { transform: rotate(45deg); }
+    .faq-a {
+      background: var(--s2); padding: 0 20px;
+      font-size: 13px; color: var(--text3); line-height: 1.7;
+      max-height: 0; overflow: hidden; transition: max-height .3s ease, padding .3s;
+    }
+    .faq-item.open .faq-a { max-height: 200px; padding: 0 20px 18px; }
+
+    /* ── CTA Final ── */
+    .cta-final {
+      background: var(--bg); text-align: center; padding: 100px 24px;
+    }
+    .cta-final h2 {
+      font-size: clamp(28px, 5vw, 52px); font-weight: 800;
+      letter-spacing: -1.5px; margin-bottom: 16px;
+    }
+    .cta-final h2 span { color: var(--gold); }
+    .cta-final p { font-size: 16px; color: var(--text2); margin-bottom: 40px; }
+    .cta-wa-big {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--wa); color: #fff;
+      padding: 18px 40px; border-radius: 99px;
+      font-size: 17px; font-weight: 700;
+      transition: transform .2s, box-shadow .2s;
+      box-shadow: 0 0 40px rgba(37,211,102,.25);
+    }
+    .cta-wa-big:hover { transform: translateY(-3px); box-shadow: 0 0 60px rgba(37,211,102,.35); }
+    .cta-sub { margin-top: 16px; font-size: 12px; color: var(--text3); }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--s1); border-top: 1px solid var(--border);
+      padding: 40px 24px;
+    }
+    .footer-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: flex; align-items: flex-start; justify-content: space-between;
+      flex-wrap: wrap; gap: 32px;
+    }
+    .footer-brand { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .footer-brand svg { fill: white; width: 20px; height: 20px; }
+    .footer-brand span { font-size: 15px; font-weight: 700; }
+    .footer-loc { font-size: 12px; color: var(--text3); }
+    .footer-links { display: flex; flex-direction: column; gap: 10px; }
+    .footer-links a { font-size: 13px; color: var(--text3); transition: color .2s; }
+    .footer-links a:hover { color: var(--text); }
+    .footer-social { display: flex; gap: 12px; }
+    .social-btn {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: var(--s3); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; transition: border-color .2s, background .2s;
+    }
+    .social-btn:hover { border-color: var(--gold); background: rgba(201,169,110,.1); }
+    .footer-bottom {
+      max-width: 1100px; margin: 32px auto 0;
+      padding-top: 20px; border-top: 1px solid var(--border);
+      font-size: 12px; color: var(--text3);
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+    }
+
+    /* ── WhatsApp float ── */
+    .wa-float {
+      position: fixed; bottom: 24px; right: 24px; z-index: 200;
+      width: 56px; height: 56px; border-radius: 50%;
+      background: var(--wa);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 20px rgba(37,211,102,.4);
+      transition: transform .2s;
+    }
+    .wa-float:hover { transform: scale(1.08); }
+    .wa-float svg { width: 28px; height: 28px; fill: white; }
+
+    /* ── Animations ── */
+    .fade-in { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-mobile-btn { display: flex; align-items: center; padding: 8px; }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .stat-item:nth-child(2) { border-right: none; }
+      .stat-item:nth-child(3) { border-top: 1px solid var(--border); }
+      .stat-item:nth-child(4) { border-top: 1px solid var(--border); border-right: none; }
+      .proceso-steps { grid-template-columns: 1fr; gap: 24px; }
+      .footer-inner { flex-direction: column; }
+    }
+    @media (max-width: 480px) {
+      section { padding: 60px 20px; }
+      .hero { padding: 60px 20px 40px; }
+      .hero-btns { flex-direction: column; align-items: stretch; }
+      .btn-wa, .btn-outline { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <a href="#" class="nav-logo" aria-label="iPhone Caleta">
+      <svg viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+      <span class="nav-brand">iPhone Caleta</span>
+    </a>
+    <div class="nav-links">
+      <a href="#stock">Stock</a>
+      <a href="#porquenosotros">Por qué nosotros</a>
+      <a href="#proceso">Verificación</a>
+      <a href="#contacto">Contacto</a>
+    </div>
+    <a href="https://wa.me/5493364400111?text=Hola!%20Quiero%20consultar%20sobre%20el%20stock%20de%20iPhones%20disponibles" target="_blank" class="nav-cta">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Escribinos
+    </a>
+    <button class="nav-mobile-btn" id="menuBtn" aria-label="Menú">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="nav-mobile-menu" id="mobileMenu">
+    <a href="#stock" onclick="closeMenu()">Stock disponible</a>
+    <a href="#porquenosotros" onclick="closeMenu()">Por qué nosotros</a>
+    <a href="#proceso" onclick="closeMenu()">Cómo verificamos</a>
+    <a href="#contacto" onclick="closeMenu()">Contacto</a>
+    <a href="https://wa.me/5493364400111?text=Hola!%20Quiero%20consultar%20sobre%20el%20stock%20de%20iPhones%20disponibles" target="_blank" class="btn-wa" style="font-size:15px">WhatsApp →</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-tag">✓ Equipos verificados</div>
+    <h1>Comprá tu próximo<br /><span>iPhone con confianza.</span></h1>
+    <p class="hero-sub">Atención personalizada en cada venta.</p>
+    <div class="hero-btns">
+      <a href="https://wa.me/5493364400111?text=Hola!%20Quiero%20consultar%20sobre%20el%20stock%20de%20iPhones%20disponibles" target="_blank" class="btn-wa">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Consultar por WhatsApp
+      </a>
+      <a href="#stock" class="btn-outline">Ver stock disponible →</a>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats fade-in">
+    <div class="stat-item"><div class="stat-num">500+</div><div class="stat-label">Equipos vendidos</div></div>
+    <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">Verificados</div></div>
+    <div class="stat-item"><div class="stat-num">≥85%</div><div class="stat-label">Batería garantizada</div></div>
+    <div class="stat-item"><div class="stat-num">🇦🇷</div><div class="stat-label">Envíos a todo el país</div></div>
+  </div>
+
+  <!-- STOCK -->
+  <!-- ════════════════════════════════════════════════════
+       !! ACTUALIZAR PRECIOS Y DISPONIBILIDAD AQUÍ !!
+       badge-disponible = verde (disponible)
+       badge-ultimo = naranja (último disponible)
+       Agregar class "sold-out" a phone-card para marcar como agotado
+       ════════════════════════════════════════════════════ -->
+  <section class="stock" id="stock">
+    <div class="container">
+      <div class="stock-header fade-in">
+        <p class="section-tag">Stock disponible</p>
+        <h2 class="section-title">iPhones listos para entregar</h2>
+        <p class="section-sub">Actualizamos el stock constantemente. Todos los equipos están verificados antes de la venta.</p>
+      </div>
+      <div class="stock-grid">
+
+        <div class="phone-card fade-in">
+          <span class="phone-badge badge-disponible">Disponible</span>
+          <div class="phone-icon">📱</div>
+          <div>
+            <div class="phone-model">iPhone 12 Pro</div>
+            <div class="phone-storage">128 GB · Azul</div>
+          </div>
+          <div class="phone-specs">
+            <div class="phone-spec">Batería 85%</div>
+            <div class="phone-spec">IMEI limpio verificado</div>
+          </div>
+          <div class="phone-price">
+            <div class="price-from">Precio</div>
+            <div class="price-val">USD 400</div>
+          </div>
+          <a href="https://wa.me/5493364400111?text=Hola!%20Me%20interesa%20el%20iPhone%2012%20Pro%20128GB%20Azul.%20%C2%BFEst%C3%A1%20disponible%3F" target="_blank" class="phone-cta">Consultar →</a>
+        </div>
+
+        <div class="phone-card fade-in">
+          <span class="phone-badge badge-disponible">Disponible</span>
+          <div class="phone-icon">📱</div>
+          <div>
+            <div class="phone-model">iPhone 15</div>
+            <div class="phone-storage">128 GB · Negro</div>
+          </div>
+          <div class="phone-specs">
+            <div class="phone-spec">Batería 92%</div>
+            <div class="phone-spec">IMEI limpio verificado</div>
+          </div>
+          <div class="phone-price">
+            <div class="price-from">Precio</div>
+            <div class="price-val">USD 600</div>
+          </div>
+          <a href="https://wa.me/5493364400111?text=Hola!%20Me%20interesa%20el%20iPhone%2015%20128GB%20Negro.%20%C2%BFEst%C3%A1%20disponible%3F" target="_blank" class="phone-cta">Consultar →</a>
+        </div>
+
+        <div class="phone-card fade-in">
+          <span class="phone-badge badge-disponible">Disponible</span>
+          <div class="phone-icon">📱</div>
+          <div>
+            <div class="phone-model">iPhone 15 Pro</div>
+            <div class="phone-storage">128 GB · Natural</div>
+          </div>
+          <div class="phone-specs">
+            <div class="phone-spec">Batería 89%</div>
+            <div class="phone-spec">IMEI limpio verificado</div>
+          </div>
+          <div class="phone-price">
+            <div class="price-from">Precio</div>
+            <div class="price-val">USD 800</div>
+          </div>
+          <a href="https://wa.me/5493364400111?text=Hola!%20Me%20interesa%20el%20iPhone%2015%20Pro%20128GB%20Natural.%20%C2%BFEst%C3%A1%20disponible%3F" target="_blank" class="phone-cta">Consultar →</a>
+        </div>
+
+        <div class="phone-card fade-in">
+          <span class="phone-badge badge-disponible">Disponible</span>
+          <div class="phone-icon">📱</div>
+          <div>
+            <div class="phone-model">iPhone 15 Pro Max</div>
+            <div class="phone-storage">512 GB · Negro</div>
+          </div>
+          <div class="phone-specs">
+            <div class="phone-spec">Batería 87%</div>
+            <div class="phone-spec">IMEI limpio verificado</div>
+          </div>
+          <div class="phone-price">
+            <div class="price-from">Precio</div>
+            <div class="price-val">USD 900</div>
+          </div>
+          <a href="https://wa.me/5493364400111?text=Hola!%20Me%20interesa%20el%20iPhone%2015%20Pro%20Max%20512GB%20Negro.%20%C2%BFEst%C3%A1%20disponible%3F" target="_blank" class="phone-cta">Consultar →</a>
+        </div>
+
+        <div class="phone-card fade-in">
+          <span class="phone-badge badge-disponible">Disponible</span>
+          <div class="phone-icon">📱</div>
+          <div>
+            <div class="phone-model">iPhone 16 Plus</div>
+            <div class="phone-storage">128 GB · Negro</div>
+          </div>
+          <div class="phone-specs">
+            <div class="phone-spec">Batería 97%</div>
+            <div class="phone-spec">IMEI limpio verificado</div>
+          </div>
+          <div class="phone-price">
+            <div class="price-from">Precio</div>
+            <div class="price-val">USD 750</div>
+          </div>
+          <a href="https://wa.me/5493364400111?text=Hola!%20Me%20interesa%20el%20iPhone%2016%20Plus%20128GB%20Negro.%20%C2%BFEst%C3%A1%20disponible%3F" target="_blank" class="phone-cta">Consultar →</a>
+        </div>
+
+        <div class="phone-card fade-in">
+          <span class="phone-badge badge-disponible">Disponible</span>
+          <div class="phone-icon">📱</div>
+          <div>
+            <div class="phone-model">iPhone 16 Pro</div>
+            <div class="phone-storage">128 GB · Desert</div>
+          </div>
+          <div class="phone-specs">
+            <div class="phone-spec">Batería 96%</div>
+            <div class="phone-spec">IMEI limpio verificado</div>
+          </div>
+          <div class="phone-price">
+            <div class="price-from">Precio</div>
+            <div class="price-val">USD 900</div>
+          </div>
+          <a href="https://wa.me/5493364400111?text=Hola!%20Me%20interesa%20el%20iPhone%2016%20Pro%20128GB%20Desert.%20%C2%BFEst%C3%A1%20disponible%3F" target="_blank" class="phone-cta">Consultar →</a>
+        </div>
+
+        <div class="phone-card fade-in">
+          <span class="phone-badge badge-disponible">Disponible</span>
+          <div class="phone-icon">📱</div>
+          <div>
+            <div class="phone-model">iPhone 16 Pro</div>
+            <div class="phone-storage">256 GB · Negro</div>
+          </div>
+          <div class="phone-specs">
+            <div class="phone-spec">Batería 90%</div>
+            <div class="phone-spec">IMEI limpio verificado</div>
+          </div>
+          <div class="phone-price">
+            <div class="price-from">Precio</div>
+            <div class="price-val">USD 950</div>
+          </div>
+          <a href="https://wa.me/5493364400111?text=Hola!%20Me%20interesa%20el%20iPhone%2016%20Pro%20256GB%20Negro.%20%C2%BFEst%C3%A1%20disponible%3F" target="_blank" class="phone-cta">Consultar →</a>
+        </div>
+
+        <div class="phone-card fade-in">
+          <span class="phone-badge badge-sellado">✦ SELLADO</span>
+          <div class="phone-icon">📦</div>
+          <div>
+            <div class="phone-model">iPhone 17 Pro</div>
+            <div class="phone-storage">256 GB · Naranja</div>
+          </div>
+          <div class="phone-specs">
+            <div class="phone-spec">Sellado de fábrica</div>
+            <div class="phone-spec">Garantía Apple incluida</div>
+          </div>
+          <div class="phone-price">
+            <div class="price-from">Precio</div>
+            <div class="price-val">USD 1.450</div>
+          </div>
+          <a href="https://wa.me/5493364400111?text=Hola!%20Me%20interesa%20el%20iPhone%2017%20Pro%20256GB%20Naranja%20SELLADO.%20%C2%BFEst%C3%A1%20disponible%3F" target="_blank" class="phone-cta">Consultar →</a>
+        </div>
+
+        <div class="phone-card fade-in">
+          <span class="phone-badge badge-sellado">✦ SELLADO</span>
+          <div class="phone-icon">📦</div>
+          <div>
+            <div class="phone-model">iPhone 17 Pro Max</div>
+            <div class="phone-storage">Naranja</div>
+          </div>
+          <div class="phone-specs">
+            <div class="phone-spec">Sellado de fábrica</div>
+            <div class="phone-spec">Garantía Apple incluida</div>
+          </div>
+          <div class="phone-price">
+            <div class="price-from">Precio</div>
+            <div class="price-val">USD 1.650</div>
+          </div>
+          <a href="https://wa.me/5493364400111?text=Hola!%20Me%20interesa%20el%20iPhone%2017%20Pro%20Max%20Naranja%20SELLADO.%20%C2%BFEst%C3%A1%20disponible%3F" target="_blank" class="phone-cta">Consultar →</a>
+        </div>
+
+      </div>
+      <p class="stock-note">¿No encontrás el modelo que buscás? <a href="https://wa.me/5493364400111?text=Hola!%20Busco%20un%20modelo%20específico%2C%20%C2%BFme%20podés%20ayudar%3F" target="_blank">Escribinos y lo conseguimos →</a></p>
+    </div>
+  </section>
+
+  <!-- POR QUÉ -->
+  <section class="why" id="porquenosotros">
+    <div class="container">
+      <div class="fade-in">
+        <p class="section-tag">Por qué elegirnos</p>
+        <h2 class="section-title">Comprá tranquilo,<br/>sabiendo lo que comprás.</h2>
+        <p class="section-sub">Cada equipo que vendemos pasa por un proceso de verificación completo. Tu tranquilidad y tu dinero merecen eso.</p>
+      </div>
+      <div class="why-grid">
+        <div class="why-card fade-in">
+          <div class="why-icon">🔍</div>
+          <div class="why-title">Verificación completa</div>
+          <div class="why-desc">Chequeamos batería, IMEI, Face ID, cámara, pantalla y conectividad antes de publicar cualquier equipo.</div>
+        </div>
+        <div class="why-card fade-in">
+          <div class="why-icon">🤝</div>
+          <div class="why-title">Atención personalizada</div>
+          <div class="why-desc">Te asesoramos según tu uso y presupuesto para que tomes la mejor decisión.</div>
+        </div>
+        <div class="why-card fade-in">
+          <div class="why-icon">🔄</div>
+          <div class="why-title">Parte de pago</div>
+          <div class="why-desc">Aceptamos tu iPhone actual como parte del pago. Consultanos el modelo y el estado y te damos una valuación al instante.</div>
+        </div>
+        <div class="why-card fade-in">
+          <div class="why-icon">📦</div>
+          <div class="why-title">Envíos a todo el país</div>
+          <div class="why-desc">Embalaje protegido, seguro incluido y seguimiento en tiempo real. Tu iPhone llega perfecto, siempre.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESO -->
+  <section class="proceso" id="proceso">
+    <div class="container">
+      <div class="fade-in">
+        <p class="section-tag">Nuestro proceso</p>
+        <h2 class="section-title">Cómo verificamos<br/>cada equipo</h2>
+        <p class="section-sub">Antes de publicar cualquier iPhone, pasa por estos 5 pasos. Sin excepciones.</p>
+      </div>
+      <div class="proceso-steps">
+        <div class="proceso-step fade-in">
+          <div class="step-num">1</div>
+          <div class="step-title">Encendido y arranque</div>
+          <div class="step-desc">Verificamos que encienda limpio, sin errores ni activaciones pendientes.</div>
+        </div>
+        <div class="proceso-step fade-in">
+          <div class="step-num">2</div>
+          <div class="step-title">Estado de batería</div>
+          <div class="step-desc">Revisamos el % real de capacidad. Solo vendemos equipos con batería ≥ 85%.</div>
+        </div>
+        <div class="proceso-step fade-in">
+          <div class="step-num">3</div>
+          <div class="step-title">Verificación IMEI</div>
+          <div class="step-desc">Consultamos el IMEI en base de datos oficial. IMEI limpio = equipo sin historial de robo ni bloqueo.</div>
+        </div>
+        <div class="proceso-step fade-in">
+          <div class="step-num">4</div>
+          <div class="step-title">Prueba completa</div>
+          <div class="step-desc">Face ID, cámara, altavoces, táctil, carga y conectividad. Todo tiene que funcionar al 100%.</div>
+        </div>
+        <div class="proceso-step fade-in">
+          <div class="step-num">5</div>
+          <div class="step-title">Publicación y venta</div>
+          <div class="step-desc">Recién ahí lo publicamos. Con descripción honesta y precio justo.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIOS -->
+  <section class="testi" id="testimonios">
+    <div class="container">
+      <div class="fade-in">
+        <p class="section-tag">Lo que dicen nuestros clientes</p>
+        <h2 class="section-title">Palabras de quienes<br/>ya compraron.</h2>
+      </div>
+      <div class="testi-grid">
+        <div class="testi-card fade-in">
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-text">"Re buena experiencia. Me asesoraron en todo, me explicaron el estado del equipo con detalles y me mandaron fotos antes de confirmar. El iPhone llegó impecable. Los recomiendo."</p>
+          <div class="testi-author">
+            <div class="testi-avatar">👩</div>
+            <div><div class="testi-name">Karen V.</div><div class="testi-loc">Caleta Olivia, Santa Cruz</div></div>
+          </div>
+        </div>
+        <div class="testi-card fade-in">
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-text">"Excelente equipo y muy buena atención. Me vendieron un iPhone 15 en perfectas condiciones, todo tal cual me dijeron. Sin vueltas, sin sorpresas. Volvería a comprar."</p>
+          <div class="testi-author">
+            <div class="testi-avatar">👨</div>
+            <div><div class="testi-name">Pablo M.</div><div class="testi-loc">Pico Truncado, Santa Cruz</div></div>
+          </div>
+        </div>
+        <div class="testi-card fade-in">
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-text">"Compré desde Buenos Aires y todo perfecto. Me asesoraron con todos los detalles, me explicaron qué revisar cuando llegara el equipo y llegó en tiempo y forma. Muy recomendables."</p>
+          <div class="testi-author">
+            <div class="testi-avatar">👨</div>
+            <div><div class="testi-name">Alexis R.</div><div class="testi-loc">Buenos Aires</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq" id="faq">
+    <div class="container">
+      <div class="fade-in">
+        <p class="section-tag">Preguntas frecuentes</p>
+        <h2 class="section-title">Todo lo que necesitás saber.</h2>
+      </div>
+      <div class="faq-list fade-in">
+        <div class="faq-item">
+          <button class="faq-q">¿Tienen local físico o es solo online? <span class="faq-arrow">+</span></button>
+          <div class="faq-a">Tenemos local físico en Caleta Olivia. Si sos de la zona podés venir a ver el equipo en persona antes de decidir. También vendemos y enviamos a todo el país.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">¿Qué métodos de pago aceptan? <span class="faq-arrow">+</span></button>
+          <div class="faq-a">Aceptamos transferencia bancaria en ARS o USD, efectivo en ARS o USD. Consultanos por cualquier duda antes de pagar.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">¿Enviás a todo el país? ¿Cuánto tarda? <span class="faq-arrow">+</span></button>
+          <div class="faq-a">Sí, enviamos a todo el país. El envío incluye seguro y seguimiento en tiempo real. El tiempo promedio es 2-5 días hábiles dependiendo de tu ubicación. Los equipos van embalados con doble protección.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">¿Aceptan parte de pago con mi celular actual? <span class="faq-arrow">+</span></button>
+          <div class="faq-a">Sí. Tomamos tu celular actual (Android o iPhone) como parte de pago. Escribinos con el modelo y el estado del equipo y te damos una valuación honesta.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section class="cta-final" id="contacto">
+    <p class="section-tag" style="margin-bottom:16px">Estamos acá para ayudarte</p>
+    <h2>¿Listo para tu<br/><span>próximo iPhone?</span></h2>
+    <p>Escribinos y te asesoramos sin compromiso. Respondemos en el momento.</p>
+    <a href="https://wa.me/5493364400111?text=Hola!%20Quiero%20consultar%20sobre%20el%20stock%20de%20iPhones%20disponibles" target="_blank" class="cta-wa-big">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Escribir por WhatsApp
+    </a>
+    <div class="cta-sub">También en Instagram: <a href="https://www.instagram.com/iphonecaleta.co/" target="_blank" style="color:var(--gold)">@iphonecaleta.co</a></div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <div class="footer-brand">
+          <svg viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+          <span>iPhone Caleta</span>
+        </div>
+        <div class="footer-loc">📍 Caleta Olivia, Santa Cruz, Argentina</div>
+      </div>
+      <div class="footer-links">
+        <a href="#stock">Stock disponible</a>
+        <a href="#porquenosotros">Por qué nosotros</a>
+        <a href="#proceso">Proceso de verificación</a>
+        <a href="#faq">Preguntas frecuentes</a>
+      </div>
+      <div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:12px;font-weight:600;text-transform:uppercase;letter-spacing:.5px">Seguinos</div>
+        <div class="footer-social">
+          <a href="https://www.instagram.com/iphonecaleta.co/" target="_blank" class="social-btn" title="Instagram">📸</a>
+          <a href="https://wa.me/5493364400111" target="_blank" class="social-btn" title="WhatsApp">💬</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 iPhone Caleta · Caleta Olivia, Santa Cruz</span>
+      <span>iPhones verificados · Atención personalizada</span>
+    </div>
+  </footer>
+
+  <!-- WA FLOAT -->
+  <a href="https://wa.me/5493364400111?text=Hola!%20Quiero%20consultar%20sobre%20el%20stock%20de%20iPhones%20disponibles" target="_blank" class="wa-float" title="WhatsApp">
+    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+
+  <script>
+    // Menú móvil
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+    function closeMenu() { mobileMenu.classList.remove('open'); }
+
+    // FAQ accordion
+    document.querySelectorAll('.faq-q').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.closest('.faq-item');
+        const isOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+        if (!isOpen) item.classList.add('open');
+      });
+    });
+
+    // Fade in on scroll
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
