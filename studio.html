@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>iPhone Caleta Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#09090a;--s1:#111113;--s2:#18181b;--border:#1e1e22;
+      --text:#fff;--t2:#777;--t3:#444;--gold:#C9A96E;
+    }
+    html,body{height:100%;overflow:hidden}
+    body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
+
+    /* AUTH */
+    #auth-screen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:999}
+    .auth-box{width:340px;padding:44px 36px;background:var(--s1);border:1px solid var(--border);border-radius:16px;text-align:center}
+    .auth-icon{width:60px;height:60px;background:#000;border:1.5px solid var(--gold);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-family:'DM Serif Display',serif;font-size:20px;color:var(--gold)}
+    .auth-title{font-size:17px;font-weight:700;margin-bottom:3px}
+    .auth-sub{font-size:12px;color:var(--t2);margin-bottom:26px}
+    .auth-input{width:100%;background:var(--s2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;padding:11px 14px;outline:none;text-align:center;letter-spacing:3px;margin-bottom:10px;transition:border-color .15s;font-family:'Inter',sans-serif}
+    .auth-input:focus{border-color:var(--gold)}
+    .auth-btn{width:100%;background:var(--gold);color:#000;font-weight:700;font-size:14px;padding:11px;border-radius:8px;border:none;cursor:pointer;transition:opacity .2s}
+    .auth-btn:hover{opacity:.85}
+    .auth-err{font-size:12px;color:#e55;margin-top:8px;min-height:16px}
+    .auth-foot{font-size:10px;color:var(--t3);margin-top:22px;letter-spacing:1.5px;text-transform:uppercase}
+
+    /* SHELL */
+    #app{display:flex;flex-direction:column;height:100vh;overflow:hidden}
+    .hdr{padding:14px 26px 12px;border-bottom:1px solid var(--border);flex-shrink:0;display:flex;align-items:flex-end;justify-content:space-between}
+    .hdr-left .badge{font-size:9px;font-weight:700;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:2px}
+    .hdr-left .title{font-size:19px;font-weight:800;letter-spacing:-.4px}
+    .hdr-left .sub{font-size:11px;color:var(--t2)}
+    .logout{font-size:11px;color:var(--t3);background:none;border:1px solid var(--border);padding:6px 14px;border-radius:6px;cursor:pointer;transition:all .15s}
+    .logout:hover{color:var(--text);border-color:var(--t3)}
+
+    .tabs{display:flex;gap:5px;padding:10px 26px;border-bottom:1px solid var(--border);flex-shrink:0}
+    .tab{display:flex;align-items:center;gap:5px;padding:7px 15px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid transparent;transition:all .15s;background:transparent;color:var(--t2)}
+    .tab.on{background:var(--gold);color:#000;border-color:var(--gold)}
+    .tab:not(.on):hover{background:var(--s2);color:var(--text);border-color:var(--border)}
+
+    .body{display:grid;grid-template-columns:188px 1fr 265px;flex:1;overflow:hidden}
+
+    /* SIDEBAR */
+    .sidebar{border-right:1px solid var(--border);padding:14px 8px;overflow-y:auto}
+    .sidebar::-webkit-scrollbar{width:3px}
+    .sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+    .side-lbl{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--t3);padding:0 7px;margin-bottom:8px}
+    .card{padding:10px 9px;border-radius:7px;cursor:pointer;border:1px solid transparent;border-left:3px solid transparent;transition:all .15s;margin-bottom:4px}
+    .card:hover{background:var(--s2)}
+    .card.on{background:var(--s2);border-color:var(--border);border-left-color:var(--gold)}
+    .card-title{font-size:12px;font-weight:600;margin-bottom:2px}
+    .card-desc{font-size:10px;color:var(--t2);line-height:1.4}
+
+    /* PREVIEW */
+    .preview-area{display:flex;flex-direction:column;align-items:center;padding:18px 18px 14px;overflow-y:auto;gap:14px}
+    .preview-area::-webkit-scrollbar{width:3px}
+    .preview-area::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+    .prev-lbl{font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--t2);align-self:flex-start}
+    .prev-wrap{position:relative;border-radius:3px;overflow:hidden;box-shadow:0 8px 48px rgba(0,0,0,.7);flex-shrink:0}
+    .prev-inner{transform-origin:top left}
+    .dl-btn{display:flex;align-items:center;gap:7px;background:var(--gold);color:#000;font-weight:700;font-size:12px;padding:10px 22px;border-radius:8px;border:none;cursor:pointer;transition:opacity .2s;flex-shrink:0}
+    .dl-btn:hover{opacity:.85}
+    .dl-btn:disabled{opacity:.4;cursor:not-allowed}
+
+    /* IG SECTION */
+    .ig-box{width:100%;background:var(--s1);border:1px solid var(--border);border-radius:9px;padding:13px;flex-shrink:0}
+    .ig-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1px}
+    .ig-lbl{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold)}
+    .ig-desc{font-size:10px;color:var(--t2);margin-bottom:7px}
+    .ig-cnt{font-size:10px;color:var(--t2)}
+    .ig-ta{width:100%;min-height:100px;background:var(--s2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'Inter',sans-serif;font-size:11px;line-height:1.6;padding:9px;resize:vertical;outline:none;margin-bottom:7px;transition:border-color .15s}
+    .ig-ta:focus{border-color:var(--gold)}
+    .copy-btn{background:var(--gold);color:#000;font-weight:700;font-size:11px;padding:7px 16px;border-radius:6px;border:none;cursor:pointer;transition:opacity .2s}
+    .copy-btn:hover{opacity:.85}
+
+    /* CUSTOMIZER */
+    .cust{border-left:1px solid var(--border);padding:14px 13px;overflow-y:auto}
+    .cust::-webkit-scrollbar{width:3px}
+    .cust::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+    .cust-lbl{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--t2);margin-bottom:14px}
+    .fg{margin-bottom:11px}
+    .fl{font-size:10px;font-weight:600;color:var(--t2);margin-bottom:4px;display:block}
+    .fi{width:100%;background:var(--s2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'Inter',sans-serif;font-size:11px;padding:7px 8px;outline:none;transition:border-color .15s}
+    textarea.fi{min-height:64px;resize:vertical;line-height:1.5}
+    .fi:focus{border-color:var(--gold)}
+    .restore{width:100%;background:transparent;border:1px solid var(--border);color:var(--t2);font-size:11px;font-weight:500;padding:7px;border-radius:6px;cursor:pointer;margin-top:3px;transition:all .15s}
+    .restore:hover{border-color:var(--gold);color:var(--gold)}
+  </style>
+</head>
+<body>
+
+<div id="auth-screen">
+  <div class="auth-box">
+    <div class="auth-icon">iC</div>
+    <div class="auth-title">iPhone Caleta Studio</div>
+    <div class="auth-sub">Acceso privado</div>
+    <form onsubmit="doLogin(event)">
+      <input class="auth-input" id="auth-pwd" type="password" placeholder="Contraseña" autocomplete="current-password">
+      <button class="auth-btn" type="submit">Ingresar</button>
+      <div class="auth-err" id="auth-err"></div>
+    </form>
+    <div class="auth-foot">iphonecaleta.com.ar</div>
+  </div>
+</div>
+
+<div id="app" style="display:none">
+  <div class="hdr">
+    <div class="hdr-left">
+      <div class="badge">● Privado</div>
+      <div class="title">iPhone Caleta Studio</div>
+      <div class="sub">Generador de contenido para redes sociales.</div>
+    </div>
+    <button class="logout" onclick="doLogout()">Salir</button>
+  </div>
+  <div class="tabs">
+    <button class="tab on" data-t="feed" onclick="switchTab('feed')">▣ &nbsp;Feed 1:1</button>
+    <button class="tab" data-t="story" onclick="switchTab('story')">▤ &nbsp;Historia</button>
+  </div>
+  <div class="body">
+    <div class="sidebar">
+      <div class="side-lbl" id="side-lbl">Templates</div>
+      <div id="tpl-list"></div>
+    </div>
+    <div class="preview-area">
+      <div class="prev-lbl" id="prev-lbl">PREVIEW — 1080 × 1080 PX</div>
+      <div class="prev-wrap" id="prev-wrap">
+        <div class="prev-inner" id="prev-inner"></div>
+      </div>
+      <button class="dl-btn" id="dl-btn" onclick="doDownload()">↓ &nbsp;Descargar PNG (1080×1080)</button>
+      <div class="ig-box">
+        <div class="ig-top">
+          <div>
+            <div class="ig-lbl">Texto para Instagram</div>
+            <div class="ig-desc">Copy + hashtags listos para copiar cuando publiques</div>
+          </div>
+          <div class="ig-cnt" id="ig-cnt">0/2200</div>
+        </div>
+        <textarea class="ig-ta" id="ig-ta" oninput="updateCnt()"></textarea>
+        <button class="copy-btn" onclick="doCopy()">Copiar texto</button>
+      </div>
+    </div>
+    <div class="cust">
+      <div class="cust-lbl">Personalizar</div>
+      <div id="fields"></div>
+      <button class="restore" onclick="doRestore()">Restaurar texto original</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── CONFIG ──────────────────────────────────────────────────────────
+const PWD = 'caleta2025';   // ← cambiá la contraseña acá
+const SK  = 'ipc_s2';
+
+// ── BRAND ───────────────────────────────────────────────────────────
+const B = { handle:'@iphonecaleta.co', web:'iphonecaleta.com.ar', wa:'+54 9 336 440-0111' };
+const HT = '#iphonecaleta #iphoneusado #iphoneargentina #iphoneverificado #apple #celularesargentina #patagonia #caletaolivia #santacruz #comprariseguro';
+
+// ── HELPERS ─────────────────────────────────────────────────────────
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const nl  = s => esc(s).replace(/\n/g,'<br>');
+
+// ── TEMPLATES ───────────────────────────────────────────────────────
+const T = {
+
+/* ══════════════════════════  FEED  ═══════════════════════════════ */
+feed: [
+
+  /* 1 ── PAIN POINT (miedo al engaño) */
+  {
+    id:'pain-point', title:'Pain Point',
+    desc:'Miedo al engaño. El dolor más común del comprador.',
+    fields:[
+      {k:'label',   l:'Etiqueta',                 t:'input',    d:'iPhone Caleta'},
+      {k:'hook',    l:'Gancho (pequeño, arriba)',  t:'input',    d:'Antes de comprar, leé esto.'},
+      {k:'title',   l:'Titular (Enter = salto)',   t:'textarea', d:'3 cosas que\ntenés que\nrevisar.'},
+      {k:'sub',     l:'Subtítulo apoyo',           t:'input',    d:'La mayoría lo ignora. Y paga las consecuencias.'},
+      {k:'handle',  l:'Handle',                    t:'input',    d:B.handle},
+      {k:'web',     l:'Web',                       t:'input',    d:B.web},
+    ],
+    igText: f=>`¿Sabés qué revisar antes de comprar un iPhone usado?\n\nLa mayoría no lo sabe. Y termina pagando por un equipo que no vale lo que pidieron.\n\n📋 3 cosas que SIEMPRE tenés que verificar:\n\n1️⃣ ESTADO DE BATERÍA → Configuración → Batería → Estado. Si es menor al 85%, descartalo.\n\n2️⃣ IMEI LIMPIO → Pedí el número IMEI y consultalo en imei.info. Si tiene historial de robo, no lo compres.\n\n3️⃣ FACE ID Y CÁMARA → Tienen que funcionar perfectamente. Si algo falla, hay reparaciones no originales.\n\nEn iPhone Caleta lo verificamos por vos, antes de publicarlo.\n\n👉 ${B.web}\n\n.\n.\n.\n${HT} #iphonebateria #imei #faceid #comprariseguro`,
+    render: f=>`
+<div style="width:1080px;height:1080px;background:#000;position:relative;overflow:hidden;font-family:'Inter',sans-serif;">
+  <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at 80% 20%,rgba(201,169,110,.07) 0%,transparent 60%);"></div>
+  <div style="position:absolute;top:52px;left:56px;right:56px;display:flex;justify-content:space-between;align-items:center;">
+    <div style="font-size:18px;font-weight:700;color:#fff;letter-spacing:-.3px;">${esc(f.label)}</div>
+    <div style="width:32px;height:32px;border:1.5px solid rgba(255,255,255,.25);border-radius:7px;display:flex;align-items:center;justify-content:center;">
+      <div style="width:14px;height:14px;background:#fff;border-radius:2px;"></div>
+    </div>
+  </div>
+  <div style="position:absolute;top:148px;left:56px;font-size:20px;font-weight:500;color:#C9A96E;letter-spacing:.3px;">${esc(f.hook)}</div>
+  <div style="position:absolute;top:208px;left:56px;right:56px;font-family:'DM Serif Display',serif;font-size:100px;line-height:1.0;color:#fff;">${nl(f.title)}</div>
+  <div style="position:absolute;bottom:130px;left:56px;right:200px;font-size:22px;font-weight:400;color:rgba(255,255,255,.5);line-height:1.5;">${esc(f.sub)}</div>
+  <div style="position:absolute;bottom:60px;left:56px;font-size:17px;color:rgba(255,255,255,.35);font-weight:400;">${esc(f.web)}</div>
+  <div style="position:absolute;bottom:60px;right:56px;font-size:18px;font-weight:600;color:#C9A96E;">${esc(f.handle)}</div>
+</div>`
+  },
+
+  /* 2 ── STOCK CARD (con zona para foto) */
+  {
+    id:'stock-card', title:'Stock Card',
+    desc:'Publicación de equipo. Agregá la foto en Canva.',
+    fields:[
+      {k:'modelo',   l:'Modelo',            t:'input', d:'iPhone 15 Pro'},
+      {k:'storage',  l:'Almacenamiento',    t:'input', d:'256 GB'},
+      {k:'battery',  l:'Batería % (número)',t:'input', d:'91'},
+      {k:'color',    l:'Color',             t:'input', d:'Titanio Natural'},
+      {k:'estado',   l:'Estado del equipo', t:'input', d:'Impecable'},
+      {k:'precio',   l:'Precio / CTA',      t:'input', d:'Consultar precio →'},
+      {k:'handle',   l:'Handle',            t:'input', d:B.handle},
+    ],
+    igText: f=>{
+      const bat = parseInt(f.battery)||0;
+      return `📱 ${esc(f.modelo)} · ${esc(f.storage)} · ${esc(f.color)}\n\n✅ Batería al ${bat}%\n✅ IMEI limpio\n✅ Face ID operativo\n✅ ${esc(f.estado)}\n\nVerificado con herramientas oficiales antes de publicarse.\n\nSin sorpresas. Sin letra chica.\n\n💬 Para conocer el precio escribinos por WhatsApp o visitá ${B.web}\n\n.\n.\n.\n${HT} #${f.modelo.replace(/\s+/g,'').toLowerCase()} #iphonestock #iphoneimpecable`;
+    },
+    render: f=>{
+      const bat = Math.min(100,Math.max(0,parseInt(f.battery)||0));
+      const batColor = bat>=90?'#4ade80':bat>=80?'#C9A96E':'#f87171';
+      return `
+<div style="width:1080px;height:1080px;background:#000;position:relative;overflow:hidden;font-family:'Inter',sans-serif;">
+  <!-- ZONA FOTO -->
+  <div style="position:absolute;top:0;left:0;right:0;height:540px;background:#0d0d0f;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+    <div style="position:absolute;inset:20px;border:1.5px dashed rgba(201,169,110,.25);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;">
+      <div style="font-size:13px;font-weight:600;letter-spacing:2px;color:rgba(201,169,110,.4);text-transform:uppercase;">Zona para foto</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.18);letter-spacing:1px;">Agregar desde Canva</div>
+    </div>
+  </div>
+  <!-- BRAND TOP -->
+  <div style="position:absolute;top:30px;left:40px;font-size:16px;font-weight:700;color:#fff;letter-spacing:-.2px;">iPhone Caleta</div>
+  <div style="position:absolute;top:26px;right:40px;background:rgba(201,169,110,.15);border:1px solid rgba(201,169,110,.5);border-radius:100px;padding:6px 16px;font-size:13px;font-weight:700;color:#C9A96E;letter-spacing:1px;text-transform:uppercase;">DISPONIBLE</div>
+  <!-- DIVIDER -->
+  <div style="position:absolute;top:540px;left:0;right:0;height:2px;background:linear-gradient(to right,transparent,#C9A96E 20%,#C9A96E 80%,transparent);"></div>
+  <!-- SPECS -->
+  <div style="position:absolute;top:566px;left:40px;right:40px;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:4px;">
+      <div style="font-family:'DM Serif Display',serif;font-size:66px;line-height:1;color:#fff;">${esc(f.modelo)}</div>
+      <div style="font-size:52px;font-weight:900;color:#C9A96E;line-height:1;">${esc(f.storage)}</div>
+    </div>
+    <div style="font-size:20px;color:rgba(255,255,255,.4);margin-bottom:22px;">${esc(f.color)} · ${esc(f.estado)}</div>
+    <!-- Battery bar -->
+    <div style="margin-bottom:20px;">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+        <div style="font-size:15px;font-weight:600;letter-spacing:1px;color:rgba(255,255,255,.45);text-transform:uppercase;">Batería</div>
+        <div style="font-size:22px;font-weight:800;color:${batColor};">${bat}%</div>
+      </div>
+      <div style="width:100%;height:8px;background:rgba(255,255,255,.08);border-radius:4px;">
+        <div style="width:${bat}%;height:100%;background:${batColor};border-radius:4px;"></div>
+      </div>
+    </div>
+    <!-- Verification row -->
+    <div style="display:flex;gap:20px;margin-bottom:26px;">
+      <div style="font-size:15px;color:rgba(255,255,255,.5);">✓ IMEI limpio</div>
+      <div style="font-size:15px;color:rgba(255,255,255,.5);">✓ Face ID</div>
+      <div style="font-size:15px;color:rgba(255,255,255,.5);">✓ Verificado</div>
+    </div>
+    <!-- Price CTA -->
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div style="font-size:24px;font-weight:700;color:#C9A96E;">${esc(f.precio)}</div>
+      <div style="font-size:16px;font-weight:600;color:rgba(255,255,255,.35);">${esc(f.handle)}</div>
+    </div>
+  </div>
+</div>`
+    }
+  },
+
+  /* 3 ── POR QUÉ COMPRAR AQUÍ */
+  {
+    id:'por-que', title:'¿Por qué acá?',
+    desc:'Diferenciación. El post que genera confianza.',
+    fields:[
+      {k:'label',   l:'Subtítulo pequeño',  t:'input',    d:'Compra con confianza y seguridad'},
+      {k:'title',   l:'Titular',            t:'textarea', d:'¿Por qué\ncomprar\naquí?'},
+      {k:'p1',      l:'Razón 1',            t:'input',    d:'Verificamos batería, IMEI y Face ID antes de publicar.'},
+      {k:'p2',      l:'Razón 2',            t:'input',    d:'500+ equipos vendidos. Sin sorpresas ni letra chica.'},
+      {k:'p3',      l:'Razón 3',            t:'input',    d:'Envíos a todo el país con seguro incluido.'},
+      {k:'web',     l:'Web',                t:'input',    d:B.web},
+      {k:'handle',  l:'Handle',             t:'input',    d:B.handle},
+    ],
+    igText: f=>`¿Por qué comprar un iPhone en iPhone Caleta y no en MercadoLibre?\n\nNos hacemos esa pregunta todos los días. Y la respuesta es simple:\n\n🔍 Verificamos cada equipo antes de publicarlo. Batería, IMEI, Face ID, cámara, táctil y conectividad. Sin excepciones.\n\n📦 Enviamos a todo el país con embalaje doble y seguro incluido. Si algo pasa en el envío, lo cubrimos.\n\n💬 Respondemos al instante por WhatsApp. No sos un número de pedido — te asesoramos de verdad.\n\n¿Dudás de algo? Escribinos y te contamos.\n\n👉 ${B.web}\n\n.\n.\n.\n${HT} #confianza #transparencia #iphone #comprariseguro`,
+    render: f=>`
+<div style="width:1080px;height:1080px;background:#000;position:relative;overflow:hidden;font-family:'Inter',sans-serif;">
+  <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at 50% 80%,rgba(201,169,110,.06) 0%,transparent 65%);"></div>
+  <div style="position:absolute;top:52px;left:0;right:0;text-align:center;font-size:17px;font-weight:700;color:#fff;">iPhone Caleta</div>
+  <div style="position:absolute;top:100px;left:0;right:0;text-align:center;font-size:18px;font-weight:400;color:#C9A96E;">${esc(f.label)}</div>
+  <div style="position:absolute;top:148px;left:56px;right:56px;font-family:'DM Serif Display',serif;font-size:110px;line-height:.98;color:#fff;">${nl(f.title)}</div>
+  <div style="position:absolute;bottom:240px;left:56px;right:56px;display:flex;flex-direction:column;gap:20px;">
+    <div style="display:flex;gap:14px;align-items:flex-start;"><div style="width:7px;height:7px;border-radius:50%;background:#C9A96E;margin-top:9px;flex-shrink:0;"></div><div style="font-size:22px;color:rgba(255,255,255,.75);line-height:1.45;">${esc(f.p1)}</div></div>
+    <div style="display:flex;gap:14px;align-items:flex-start;"><div style="width:7px;height:7px;border-radius:50%;background:#C9A96E;margin-top:9px;flex-shrink:0;"></div><div style="font-size:22px;color:rgba(255,255,255,.75);line-height:1.45;">${esc(f.p2)}</div></div>
+    <div style="display:flex;gap:14px;align-items:flex-start;"><div style="width:7px;height:7px;border-radius:50%;background:#C9A96E;margin-top:9px;flex-shrink:0;"></div><div style="font-size:22px;color:rgba(255,255,255,.75);line-height:1.45;">${esc(f.p3)}</div></div>
+  </div>
+  <div style="position:absolute;bottom:0;left:0;right:0;height:90px;display:flex;align-items:center;justify-content:center;">
+    <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:100px;padding:14px 48px;font-size:20px;font-weight:600;color:#fff;">${esc(f.web)}</div>
+  </div>
+</div>`
+  },
+
+  /* 4 ── PROCESO DE VERIFICACIÓN */
+  {
+    id:'proceso', title:'Proceso Verificación',
+    desc:'Los 5 pasos que hacen la diferencia.',
+    fields:[
+      {k:'title', l:'Título',  t:'textarea', d:'Así verificamos\ncada equipo.'},
+      {k:'s1',    l:'Paso 1',  t:'input',    d:'Batería ≥ 85% — chequeada con herramienta oficial'},
+      {k:'s2',    l:'Paso 2',  t:'input',    d:'IMEI consultado en base oficial. Cero historial'},
+      {k:'s3',    l:'Paso 3',  t:'input',    d:'Face ID completo. Sin Touch ID trucado'},
+      {k:'s4',    l:'Paso 4',  t:'input',    d:'Cámara, táctil y altavoces. Todo probado'},
+      {k:'s5',    l:'Paso 5',  t:'input',    d:'Conectividad. Datos, WiFi y llamadas'},
+      {k:'cierre',l:'Cierre',  t:'input',    d:'5 pasos. Sin excepciones. Siempre.'},
+      {k:'handle',l:'Handle',  t:'input',    d:B.handle},
+    ],
+    igText: f=>`Este es el proceso que hacemos con CADA equipo antes de publicarlo.\n\nNo es marketing. Es lo que hacemos.\n\n01 → Batería: chequeamos el % real con herramientas oficiales. Si es menor al 85%, no lo publicamos.\n\n02 → IMEI: consultamos en base oficial. Si tiene historial de robo o bloqueo, fuera.\n\n03 → Face ID: tiene que funcionar al 100%. Sin excepciones.\n\n04 → Cámara, táctil y altavoces: probamos todo. Si algo falla, lo informamos.\n\n05 → Conectividad: datos, WiFi, llamadas. Todo tiene que andar perfecto.\n\n¿El resultado? 500+ equipos vendidos sin una sola queja por el estado del equipo.\n\n👉 ${B.web}\n\n.\n.\n.\n${HT} #verificacion #proceso #calidad #iphoneverificado`,
+    render: f=>`
+<div style="width:1080px;height:1080px;background:#000;position:relative;overflow:hidden;font-family:'Inter',sans-serif;">
+  <div style="position:absolute;top:0;left:0;width:4px;bottom:0;background:linear-gradient(to bottom,#C9A96E,rgba(201,169,110,.1));"></div>
+  <div style="position:absolute;top:58px;left:72px;right:56px;font-family:'DM Serif Display',serif;font-size:78px;line-height:1.06;color:#fff;">${nl(f.title)}</div>
+  <div style="position:absolute;top:280px;left:72px;right:56px;display:flex;flex-direction:column;gap:22px;">
+    ${[f.s1,f.s2,f.s3,f.s4,f.s5].map((s,i)=>`
+    <div style="display:flex;gap:20px;align-items:flex-start;">
+      <div style="font-size:20px;font-weight:900;color:#C9A96E;min-width:32px;line-height:1.3;">0${i+1}</div>
+      <div style="width:1px;background:rgba(201,169,110,.25);align-self:stretch;margin-top:4px;"></div>
+      <div style="font-size:24px;font-weight:400;color:rgba(255,255,255,.78);line-height:1.4;">${esc(s)}</div>
+    </div>`).join('')}
+  </div>
+  <div style="position:absolute;bottom:80px;left:72px;right:56px;display:flex;justify-content:space-between;align-items:center;">
+    <div style="font-size:22px;font-weight:600;color:#C9A96E;">${esc(f.cierre)}</div>
+    <div style="font-size:17px;font-weight:600;color:rgba(255,255,255,.35);">${esc(f.handle)}</div>
+  </div>
+</div>`
+  },
+
+  /* 5 ── TIP EDUCATIVO (batería) */
+  {
+    id:'tip-bateria', title:'Tip Batería',
+    desc:'Cómo revisar la batería. El tip más compartido.',
+    fields:[
+      {k:'num',    l:'Número de tip',     t:'input',    d:'TIP 01'},
+      {k:'title',  l:'Pregunta / Título', t:'input',    d:'¿Cómo revisar la batería antes de comprar?'},
+      {k:'body',   l:'Explicación',       t:'textarea', d:'1. Pedí que abran el iPhone.\n2. Configuración → Batería → Estado.\n3. Si dice menos del 85%: no lo compres.'},
+      {k:'cierre', l:'Frase de cierre',   t:'input',    d:'Simple. Y te ahorrás un disgusto.'},
+      {k:'handle', l:'Handle',            t:'input',    d:B.handle},
+    ],
+    igText: f=>`El tip más importante que podés aplicar antes de comprar un iPhone usado.\n\n📱 Cómo revisar la batería en 30 segundos:\n\n1 → Pedí que desbloqueen el iPhone.\n2 → Configuración → Batería → Estado de la batería.\n3 → Si dice menos del 85%, el teléfono se va a notar lento y vas a cargar constantemente.\n\n¿Cuál es el mínimo aceptable? 85%.\nEl promedio de nuestros equipos: 90%.\n\n👉 ${B.web}\n\n.\n.\n.\n${HT} #iphonebateria #tipsiphone #bateria #comprariseguro`,
+    render: f=>`
+<div style="width:1080px;height:1080px;background:#0d0d0f;position:relative;overflow:hidden;font-family:'Inter',sans-serif;">
+  <div style="position:absolute;top:56px;left:56px;width:52px;height:52px;border-top:2px solid #C9A96E;border-left:2px solid #C9A96E;"></div>
+  <div style="position:absolute;bottom:56px;right:56px;width:52px;height:52px;border-bottom:2px solid #C9A96E;border-right:2px solid #C9A96E;"></div>
+  <div style="position:absolute;top:138px;left:72px;font-size:15px;font-weight:800;letter-spacing:4px;color:#C9A96E;text-transform:uppercase;">${esc(f.num)}</div>
+  <div style="position:absolute;top:170px;left:72px;width:64px;height:2px;background:#C9A96E;"></div>
+  <div style="position:absolute;top:212px;left:72px;right:72px;font-family:'DM Serif Display',serif;font-size:72px;line-height:1.1;color:#fff;">${esc(f.title)}</div>
+  <div style="position:absolute;top:540px;left:72px;right:72px;font-size:28px;font-weight:400;color:rgba(255,255,255,.72);line-height:1.8;">${nl(f.body)}</div>
+  <div style="position:absolute;bottom:110px;left:72px;right:72px;display:flex;justify-content:space-between;align-items:center;">
+    <div style="font-size:22px;font-weight:600;color:#C9A96E;">${esc(f.cierre)}</div>
+    <div style="font-size:17px;font-weight:600;color:rgba(255,255,255,.3);">${esc(f.handle)}</div>
+  </div>
+</div>`
+  },
+
+  /* 6 ── PRUEBA SOCIAL */
+  {
+    id:'prueba-social', title:'Prueba Social',
+    desc:'Testimonio real. El contenido que más convierte.',
+    fields:[
+      {k:'quote',  l:'Testimonio del cliente', t:'textarea', d:'"Me asesoraron en todo. El iPhone llegó impecable y exactamente como lo describieron. Los recomiendo sin dudarlo."'},
+      {k:'autor',  l:'Nombre y ciudad',        t:'input',    d:'Karen V. · Caleta Olivia, Santa Cruz'},
+      {k:'modelo', l:'Equipo comprado',         t:'input',    d:'iPhone 14 Pro · 256 GB'},
+      {k:'handle', l:'Handle',                 t:'input',    d:B.handle},
+    ],
+    igText: f=>`Los números hablan solos.\n\nPero las palabras de quienes compraron valen más.\n\n"${f.quote.replace(/"/g,'')}" — ${f.autor}\n\n500+ personas ya compraron con nosotros. Cada equipo verificado. Cada cliente atendido de forma personalizada.\n\n¿Querés ser el siguiente? Escribinos.\n\n👉 ${B.web}\n\n.\n.\n.\n${HT} #testimonios #reseñas #confianza #iphonecaleta`,
+    render: f=>`
+<div style="width:1080px;height:1080px;background:#000;position:relative;overflow:hidden;font-family:'Inter',sans-serif;">
+  <div style="position:absolute;top:-60px;left:30px;font-family:'DM Serif Display',serif;font-size:560px;color:#C9A96E;opacity:.04;line-height:1;">"</div>
+  <div style="position:absolute;top:0;bottom:0;right:0;width:4px;background:linear-gradient(to bottom,transparent,#C9A96E 20%,#C9A96E 80%,transparent);"></div>
+  <div style="position:absolute;top:72px;left:60px;font-size:30px;color:#C9A96E;letter-spacing:5px;">★★★★★</div>
+  <div style="position:absolute;top:148px;left:60px;right:72px;font-family:'DM Serif Display',serif;font-style:italic;font-size:58px;line-height:1.28;color:#fff;">${nl(f.quote)}</div>
+  <div style="position:absolute;bottom:240px;left:60px;width:52px;height:2px;background:#C9A96E;"></div>
+  <div style="position:absolute;bottom:180px;left:60px;font-size:24px;font-weight:600;color:rgba(255,255,255,.85);">— ${esc(f.autor)}</div>
+  <div style="position:absolute;bottom:130px;left:60px;font-size:18px;color:rgba(255,255,255,.35);">${esc(f.modelo)}</div>
+  <div style="position:absolute;bottom:70px;left:60px;right:72px;display:flex;justify-content:space-between;align-items:center;">
+    <div style="font-size:15px;color:rgba(255,255,255,.2);letter-spacing:.5px;">500+ equipos vendidos · 100% verificados</div>
+    <div style="font-size:17px;font-weight:600;color:#C9A96E;">${esc(f.handle)}</div>
+  </div>
+</div>`
+  },
+
+  /* 7 ── NÚMERO / DATO SOCIAL */
+  {
+    id:'numero-dato', title:'Número / Dato',
+    desc:'Credibilidad con un número grande. Genera confianza.',
+    fields:[
+      {k:'num',    l:'Número grande',     t:'input', d:'500+'},
+      {k:'label',  l:'Label del número',  t:'input', d:'Equipos vendidos'},
+      {k:'sub1',   l:'Dato 2',            t:'input', d:'100% verificados'},
+      {k:'sub2',   l:'Dato 3',            t:'input', d:'≥ 85% batería garantizada'},
+      {k:'cierre', l:'Frase cierre',      t:'input', d:'Cada uno. Sin excepciones.'},
+      {k:'handle', l:'Handle',            t:'input', d:B.handle},
+      {k:'web',    l:'Web',               t:'input', d:B.web},
+    ],
+    igText: f=>`${f.num} ${f.label}.\n\nCada uno verificado antes de publicarse.\n\nEse número no es casualidad — es la consecuencia de hacer las cosas bien.\n\nBatería real. IMEI limpio. Face ID operativo. Eso prometemos. Eso entregamos.\n\n¿Querés ser parte de esos números? Visitá el stock en ${B.web}\n\n.\n.\n.\n${HT} #500vendidos #confianza #iphonecaleta`,
+    render: f=>`
+<div style="width:1080px;height:1080px;background:#000;position:relative;overflow:hidden;font-family:'Inter',sans-serif;">
+  <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at 50% 50%,rgba(201,169,110,.05) 0%,transparent 70%);"></div>
+  <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#C9A96E;"></div>
+  <div style="position:absolute;bottom:0;left:0;right:0;height:1px;background:rgba(201,169,110,.2);"></div>
+  <div style="position:absolute;top:52px;left:0;right:0;text-align:center;font-size:16px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:2px;text-transform:uppercase;">iPhone Caleta</div>
+  <div style="position:absolute;top:160px;left:0;right:0;text-align:center;">
+    <div style="font-family:'DM Serif Display',serif;font-size:260px;line-height:.9;color:#C9A96E;">${esc(f.num)}</div>
+    <div style="font-size:38px;font-weight:700;color:#fff;letter-spacing:2px;text-transform:uppercase;margin-top:16px;">${esc(f.label)}</div>
+  </div>
+  <div style="position:absolute;bottom:210px;left:0;right:0;display:flex;justify-content:center;gap:60px;">
+    <div style="text-align:center;"><div style="font-size:19px;font-weight:700;color:#C9A96E;">${esc(f.sub1)}</div></div>
+    <div style="width:1px;background:rgba(255,255,255,.1);"></div>
+    <div style="text-align:center;"><div style="font-size:19px;font-weight:700;color:#C9A96E;">${esc(f.sub2)}</div></div>
+  </div>
+  <div style="position:absolute;bottom:120px;left:0;right:0;text-align:center;font-size:22px;font-weight:400;color:rgba(255,255,255,.4);">${esc(f.cierre)}</div>
+  <div style="position:absolute;bottom:58px;left:56px;font-size:16px;color:rgba(255,255,255,.25);">${esc(f.web)}</div>
+  <div style="position:absolute;bottom:58px;right:56px;font-size:17px;font-weight:600;color:#C9A96E;">${esc(f.handle)}</div>
+</div>`
+  },
+
+  /* 8 ── COMPARATIVA DE MODELOS */
+  {
+    id:'comparativa', title:'Comparativa',
+    desc:'Ayudá al cliente a elegir entre dos modelos.',
+    fields:[
+      {k:'m1',   l:'Modelo A (izquierda)',    t:'input', d:'iPhone 14 Pro'},
+      {k:'g1',   l:'Modelo A — GB',           t:'input', d:'128 GB'},
+      {k:'b1',   l:'Modelo A — Batería %',    t:'input', d:'88'},
+      {k:'p1',   l:'Modelo A — Precio',       t:'input', d:'Desde $X'},
+      {k:'m2',   l:'Modelo B (derecha)',       t:'input', d:'iPhone 15 Pro'},
+      {k:'g2',   l:'Modelo B — GB',           t:'input', d:'128 GB'},
+      {k:'b2',   l:'Modelo B — Batería %',    t:'input', d:'95'},
+      {k:'p2',   l:'Modelo B — Precio',       t:'input', d:'Desde $X'},
+      {k:'cta',  l:'CTA final',               t:'input', d:'¿No sabés cuál elegir? Escribinos.'},
+      {k:'handle',l:'Handle',                 t:'input', d:B.handle},
+    ],
+    igText: f=>`¿${esc(f.m1)} o ${esc(f.m2)}? La pregunta que más nos hacen.\n\n📱 ${esc(f.m1)} — ${esc(f.g1)}\n· Batería: ${esc(f.b1)}%\n· Precio: ${esc(f.p1)}\n· Para quién: usuarios que quieren iPhone Pro sin pagar el precio del 15.\n\n📱 ${esc(f.m2)} — ${esc(f.g2)}\n· Batería: ${esc(f.b2)}%\n· Precio: ${esc(f.p2)}\n· Para quién: los que quieren lo último en conectividad y cámara.\n\nAmbos verificados. Ambos con IMEI limpio.\n\n💬 No sabés cuál elegir? Contanos tu uso y presupuesto y te recomendamos el ideal.\n\n👉 ${B.web}\n\n.\n.\n.\n${HT} #comparativa #iphonepro #elegiriphone`,
+    render: f=>{
+      const b1=Math.min(100,Math.max(0,parseInt(f.b1)||0));
+      const b2=Math.min(100,Math.max(0,parseInt(f.b2)||0));
+      return `
+<div style="width:1080px;height:1080px;background:#000;position:relative;overflow:hidden;font-family:'Inter',sans-serif;">
+  <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(to right,transparent 10%,#C9A96E 50%,transparent 90%);"></div>
+  <div style="position:absolute;top:54px;left:0;right:0;text-align:center;font-size:13px;font-weight:700;letter-spacing:3px;color:#C9A96E;text-transform:uppercase;">Comparativa</div>
+  <!-- Divider vertical -->
+  <div style="position:absolute;top:110px;bottom:130px;left:50%;width:1px;background:rgba(255,255,255,.1);"></div>
+  <!-- MODELO A -->
+  <div style="position:absolute;top:110px;left:40px;width:480px;padding:40px 30px;display:flex;flex-direction:column;gap:14px;">
+    <div style="font-family:'DM Serif Display',serif;font-size:52px;line-height:1.05;color:#fff;">${esc(f.m1)}</div>
+    <div style="font-size:32px;font-weight:800;color:#C9A96E;">${esc(f.g1)}</div>
+    <div style="font-size:18px;color:rgba(255,255,255,.5);">Batería</div>
+    <div style="width:100%;height:7px;background:rgba(255,255,255,.08);border-radius:4px;"><div style="width:${b1}%;height:100%;background:#C9A96E;border-radius:4px;"></div></div>
+    <div style="font-size:28px;font-weight:800;color:#fff;">${b1}%</div>
+    <div style="font-size:22px;font-weight:600;color:rgba(255,255,255,.6);margin-top:8px;">${esc(f.p1)}</div>
+  </div>
+  <!-- MODELO B -->
+  <div style="position:absolute;top:110px;right:40px;width:480px;padding:40px 30px;display:flex;flex-direction:column;gap:14px;align-items:flex-end;">
+    <div style="font-family:'DM Serif Display',serif;font-size:52px;line-height:1.05;color:#fff;text-align:right;">${esc(f.m2)}</div>
+    <div style="font-size:32px;font-weight:800;color:#C9A96E;">${esc(f.g2)}</div>
+    <div style="font-size:18px;color:rgba(255,255,255,.5);">Batería</div>
+    <div style="width:100%;height:7px;background:rgba(255,255,255,.08);border-radius:4px;"><div style="width:${b2}%;height:100%;background:#C9A96E;border-radius:4px;float:right;"></div></div>
+    <div style="font-size:28px;font-weight:800;color:#fff;">${b2}%</div>
+    <div style="font-size:22px;font-weight:600;color:rgba(255,255,255,.6);margin-top:8px;">${esc(f.p2)}</div>
+  </div>
+  <div style="position:absolute;bottom:0;left:0;right:0;height:120px;border-top:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:space-between;padding:0 44px;">
+    <div style="font-size:22px;font-weight:600;color:#C9A96E;">${esc(f.cta)}</div>
+    <div style="font-size:17px;font-weight:600;color:rgba(255,255,255,.3);">${esc(f.handle)}</div>
+  </div>
+</div>`
+    }
+  },
+
+  /* 9 ── IMEI EDUCATIVO */
+  {
+    id:'imei-edu', title:'IMEI Educativo',
+    desc:'Qué es el IMEI. El post que genera más guardados.',
+    fields:[
+      {k:'title',  l:'Titular',      t:'textarea', d:'¿Qué es el\nIMEI y por\nqué importa?'},
+      {k:'def',    l:'Definición',   t:'input',    d:'Es el número de serie único de tu iPhone.'},
+      {k:'risk',   l:'Riesgo',       t:'input',    d:'Si está robado o bloqueado, deja de funcionar.'},
+      {k:'action', l:'Cómo revisar', t:'input',    d:'Pedí el IMEI y chequealo en imei.info'},
+      {k:'cierre', l:'Promesa',      t:'input',    d:'En iPhone Caleta lo verificamos siempre. Siempre.'},
+      {k:'handle', l:'Handle',       t:'input',    d:B.handle},
+    ],
+    igText: f=>`¿Sabés qué es el IMEI de tu iPhone y por qué deberías pedirlo ANTES de comprar?\n\n📋 El IMEI es el número de identidad único de cada celular. Cada iPhone tiene uno diferente.\n\n⚠️ El problema: si el equipo fue robado o tiene algún bloqueo operador, puede dejar de funcionar en cualquier momento. Y no hay forma de recuperarlo.\n\n✅ Cómo verificarlo:\n1. Pedí el IMEI al vendedor (Configuración → General → Info)\n2. Ingresalo en imei.info\n3. Revisá que no tenga bloqueos ni historial de robo\n\nEn iPhone Caleta lo chequeamos ANTES de publicar. Si no pasa, no va al stock.\n\n👉 ${B.web}\n\n.\n.\n.\n${HT} #imei #imeilimpio #iphonerobo #comprariseguro`,
+    render: f=>`
+<div style="width:1080px;height:1080px;background:#000;position:relative;overflow:hidden;font-family:'Inter',sans-serif;">
+  <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,rgba(201,169,110,.04) 0%,transparent 50%);"></div>
+  <div style="position:absolute;top:60px;left:56px;right:56px;font-family:'DM Serif Display',serif;font-size:96px;line-height:1.0;color:#fff;">${nl(f.title)}</div>
+  <div style="position:absolute;top:424px;left:56px;right:56px;height:1px;background:rgba(255,255,255,.08);"></div>
+  <div style="position:absolute;top:460px;left:56px;right:56px;display:flex;flex-direction:column;gap:28px;">
+    <div style="display:flex;gap:16px;align-items:flex-start;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:#C9A96E;text-transform:uppercase;min-width:68px;margin-top:4px;">QUÉ ES</div>
+      <div style="font-size:24px;color:rgba(255,255,255,.7);line-height:1.4;">${esc(f.def)}</div>
+    </div>
+    <div style="display:flex;gap:16px;align-items:flex-start;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:#C9A96E;text-transform:uppercase;min-width:68px;margin-top:4px;">RIESGO</div>
+      <div style="font-size:24px;color:rgba(255,255,255,.7);line-height:1.4;">${esc(f.risk)}</div>
+    </div>
+    <div style="display:flex;gap:16px;align-items:flex-start;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:#C9A96E;text-transform:uppercase;min-width:68px;margin-top:4px;">ACCIÓN</div>
+      <div style="font-size:24px;color:rgba(255,255,255,.7);line-height:1.4;">${esc(f.action)}</div>
+    </div>
+  </div>
+  <div style="position:absolute;bottom:0;left:0;right:0;height:110px;border-top:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:space-between;padding:0 56px;">
+    <div style="font-size:20px;font-weight:600;color:#C9A96E;">${esc(f.cierre)}</div>
+    <div style="font-size:17px;font-weight:600;color:rgba(255,255,255,.3);">${esc(f.handle)}</div>
+  </div>
+</div>`
+  },
+
+  /* 10 ── CTA WHATSAPP */
+  {
+    id:'cta-wa', title:'CTA WhatsApp',
+    desc:'Conversión directa. Cerrá la venta.',
+    fields:[
+      {k:'hook',   l:'Gancho',         t:'input',    d:'¿No encontrás lo que buscás?'},
+      {k:'title',  l:'Titular',        t:'textarea', d:'Escribinos\ny lo\nconseguimos.'},
+      {k:'sub',    l:'Subtítulo',      t:'input',    d:'Te asesoramos según tu uso y presupuesto. Sin rodeos.'},
+      {k:'cta',    l:'Botón CTA',      t:'input',    d:'Consultar por WhatsApp →'},
+      {k:'web',    l:'Web',            t:'input',    d:B.web},
+      {k:'handle', l:'Handle',         t:'input',    d:B.handle},
+    ],
+    igText: f=>`¿Buscás un iPhone específico y no lo encontrás?\n\nNos pasa seguido. La solución:\n\n💬 Escribinos por WhatsApp y te contamos qué tenemos en stock. Si no lo tenemos, te avisamos cuando entra.\n\nNo te vendemos lo que no tenemos. Si no está en el stock, te lo decimos y te recomendamos la mejor alternativa.\n\nAsí trabajamos.\n\n💬 ${B.wa}\n👉 ${B.web}\n\n.\n.\n.\n${HT} #whatsapp #asesoramiento #iphonestock #atencionpersonalizada`,
+    render: f=>`
+<div style="width:1080px;height:1080px;background:#000;position:relative;overflow:hidden;font-family:'Inter',sans-serif;">
+  <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at 30% 70%,rgba(201,169,110,.06) 0%,transparent 60%);"></div>
+  <div style="position:absolute;top:0;right:0;bottom:0;left:0;border:1px solid rgba(255,255,255,.04);pointer-events:none;margin:32px;border-radius:4px;"></div>
+  <div style="position:absolute;top:70px;left:66px;font-size:20px;font-weight:500;color:#C9A96E;">${esc(f.hook)}</div>
+  <div style="position:absolute;top:120px;left:66px;right:66px;font-family:'DM Serif Display',serif;font-size:128px;line-height:.97;color:#fff;">${nl(f.title)}</div>
+  <div style="position:absolute;bottom:230px;left:66px;right:66px;font-size:24px;font-weight:400;color:rgba(255,255,255,.5);line-height:1.5;">${esc(f.sub)}</div>
+  <div style="position:absolute;bottom:130px;left:66px;">
+    <div style="display:inline-flex;align-items:center;gap:10px;background:rgba(201,169,110,.1);border:1px solid rgba(201,169,110,.4);border-radius:100px;padding:14px 36px;font-size:20px;font-weight:700;color:#C9A96E;">${esc(f.cta)}</div>
+  </div>
+  <div style="position:absolute;bottom:60px;left:66px;font-size:16px;color:rgba(255,255,255,.22);">${esc(f.web)}</div>
+  <div style="position:absolute;bottom:60px;right:66px;font-size:17px;font-weight:600;color:#C9A96E;">${esc(f.handle)}</div>
+</div>`
+  },
+
+], // end feed
+
+/* ══════════════════════════  HISTORIAS  ══════════════════════════ */
+story: [
+
+  /* 1 ── HOOK / DOLOR */
+  {
+    id:'hook-dolor', title:'Hook / Dolor',
+    desc:'Pregunta que frena el scroll. Arrancar la historia.',
+    fields:[
+      {k:'label',   l:'Etiqueta (pequeña)',       t:'input',    d:'IPHONE CALETA'},
+      {k:'question',l:'Pregunta (Enter = salto)', t:'textarea', d:'¿Compraste\nun iPhone y\nno te dijeron\nla batería real?'},
+      {k:'cierre',  l:'Frase de cierre',          t:'input',    d:'A nosotros nos podés preguntar todo.'},
+      {k:'handle',  l:'Handle',                   t:'input',    d:B.handle},
+    ],
+    igText: f=>`Es la historia de miles de compradores en Argentina.\n\nCompran sin saber. Les mienten. Se arrepienten.\n\nEn iPhone Caleta eso no pasa.\n\nCada equipo verificado antes de salir al stock. Batería real, IMEI limpio, Face ID operativo.\n\n¿Tenés dudas? Escribinos antes de comprar. Te asesoramos sin compromiso.\n\n👉 ${B.web}\n\n.\n.\n.\n${HT} #engaño #iphoneusado #comprariseguro`,
+    render: f=>`
+<div style="width:1080px;height:1920px;background:#000;position:relative;overflow:hidden;font-family:'Inter',sans-serif;">
+  <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at 50% 30%,rgba(201,169,110,.07) 0%,transparent 55%);"></div>
+  <div style="position:absolute;top:0;left:0;right:0;height:3px;background:#C9A96E;"></div>
+  <!-- Brand top -->
+  <div style="position:absolute;top:80px;left:0;right:0;display:flex;align-items:center;justify-content:center;gap:14px;">
+    <div style="width:52px;height:52px;background:#C9A96E;border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-size:20px;color:#000;">iC</div>
+    <div style="font-size:24px;font-weight:700;color:#fff;">iPhone Caleta</div>
+  </div>
+  <div style="position:absolute;top:180px;left:80px;right:80px;height:1px;background:rgba(255,255,255,.08);"></div>
+  <div style="position:absolute;top:228px;left:80px;font-size:16px;font-weight:700;letter-spacing:3px;color:#C9A96E;text-transform:uppercase;">${esc(f.label)}</div>
+  <div style="position:absolute;top:268px;left:80px;right:80px;font-family:'DM Serif Display',serif;font-size:120px;line-height:1.0;color:#fff;">${nl(f.question)}</div>
+  <div style="position:absolute;bottom:200px;left:80px;right:80px;font-size:34px;font-weight:400;color:rgba(255,255,255,.6);line-height:1.5;">${esc(f.cierre)}</div>
+  <div style="position:absolute;bottom:120px;left:80px;width:12px;height:12px;border-radius:50%;background:#C9A96E;"></div>
+  <div style="position:absolute;bottom:120px;right:80px;font-size:23px;font-weight:600;color:#C9A96E;">${esc(f.handle)}</div>
+</div>`
+  },
+
+  /* 2 ── FEATURE STORY */
+  {
+    id:'feature-story', title:'Feature Story',
+    desc:'Una función clave con botón de acción.',
+    fields:[
+      {k:'pretag', l:'Etiqueta',       t:'input',    d:'ASÍ TRABAJAMOS'},
+      {k:'title',  l:'Titular',        t:'textarea', d:'Verificamos el IMEI en base oficial.'},
+      {k:'body',   l:'Descripción',    t:'textarea', d:'Cero historial de robo o bloqueo.\n\nCada equipo antes de publicarse.\nSiempre.'},
+      {k:'cta',    l:'Botón de acción',t:'input',    d:'Ver stock disponible →'},
+      {k:'handle', l:'Handle',         t:'input',    d:B.handle},
+    ],
+    igText: f=>`¿Sabés qué significa que el IMEI esté limpio?\n\nMeans: el equipo no fue reportado robado, no tiene bloqueo de operador y es 100% tuyo cuando lo comprás.\n\nEn iPhone Caleta:\n→ Consultamos el IMEI de cada equipo en base oficial\n→ Si tiene algún historial negativo, no lo publicamos\n→ Te mostramos el resultado antes de cerrar la compra\n\nTransparencia total. Siempre.\n\n👉 ${B.web}\n\n.\n.\n.\n${HT} #imei #imeilimpio #transparencia #iphoneverificado`,
+    render: f=>`
+<div style="width:1080px;height:1920px;background:#0d0d0f;position:relative;overflow:hidden;font-family:'Inter',sans-serif;">
+  <div style="position:absolute;top:0;left:0;right:0;height:5px;background:#C9A96E;"></div>
+  <!-- Brand -->
+  <div style="position:absolute;top:80px;left:80px;font-size:20px;font-weight:800;color:#fff;letter-spacing:-.3px;">iPhone Caleta</div>
+  <div style="position:absolute;top:110px;left:80px;font-size:14px;color:rgba(255,255,255,.3);">${B.web}</div>
+  <!-- Huge decorative number -->
+  <div style="position:absolute;top:150px;right:-20px;font-family:'DM Serif Display',serif;font-size:320px;font-weight:900;color:#C9A96E;opacity:.06;line-height:1;">02</div>
+  <!-- Label -->
+  <div style="position:absolute;top:200px;left:80px;font-size:16px;font-weight:700;letter-spacing:3px;color:#C9A96E;text-transform:uppercase;">${esc(f.pretag)}</div>
+  <div style="position:absolute;top:236px;left:80px;width:52px;height:2px;background:#C9A96E;"></div>
+  <!-- Title -->
+  <div style="position:absolute;top:282px;left:80px;right:80px;font-family:'DM Serif Display',serif;font-size:96px;line-height:1.08;color:#fff;">${nl(f.title)}</div>
+  <!-- Body -->
+  <div style="position:absolute;top:860px;left:80px;right:80px;font-size:34px;font-weight:400;color:rgba(255,255,255,.65);line-height:1.65;">${nl(f.body)}</div>
+  <!-- CTA -->
+  <div style="position:absolute;bottom:230px;left:80px;">
+    <div style="display:inline-block;background:#C9A96E;color:#000;font-size:24px;font-weight:700;padding:18px 44px;border-radius:100px;">${esc(f.cta)}</div>
+  </div>
+  <div style="position:absolute;bottom:130px;right:80px;font-size:23px;font-weight:600;color:#C9A96E;">${esc(f.handle)}</div>
+</div>`
+  },
+
+  /* 3 ── CTA STORY (conversión) */
+  {
+    id:'cta-story', title:'CTA Story',
+    desc:'Historia de conversión. El cierre del funnel.',
+    fields:[
+      {k:'pretitle',l:'Subtítulo superior',  t:'input',    d:'iPhones verificados · Patagonia Argentina'},
+      {k:'title',   l:'Titular',             t:'textarea', d:'Compra con\nconfianza.'},
+      {k:'frase',   l:'Frase de marca',      t:'input',    d:'"Sabés exactamente lo que comprás."'},
+      {k:'cta1',    l:'CTA principal',       t:'input',    d:'👉 iphonecaleta.com.ar'},
+      {k:'cta2',    l:'CTA WhatsApp',        t:'input',    d:'💬 WhatsApp · +54 9 336 440-0111'},
+      {k:'handle',  l:'Handle',              t:'input',    d:B.handle},
+    ],
+    igText: f=>`La promesa de iPhone Caleta es simple:\n\nSabés exactamente lo que comprás.\n\nCada equipo verificado. Cada cliente atendido de forma personalizada. Cada venta con transparencia total.\n\n500+ equipos vendidos. Y contando.\n\n¿Querés ver el stock?\n💬 ${B.wa}\n👉 ${B.web}\n\n.\n.\n.\n${HT} #confianza #transparencia #iphone #comprar`,
+    render: f=>`
+<div style="width:1080px;height:1920px;background:#000;position:relative;overflow:hidden;font-family:'Inter',sans-serif;">
+  <div style="position:absolute;top:-260px;right:-260px;width:860px;height:860px;border-radius:50%;border:80px solid rgba(201,169,110,.08);"></div>
+  <div style="position:absolute;top:-340px;right:-340px;width:1020px;height:1020px;border-radius:50%;border:1px solid rgba(201,169,110,.05);"></div>
+  <div style="position:absolute;bottom:-380px;left:-380px;width:860px;height:860px;border-radius:50%;border:80px solid rgba(201,169,110,.06);"></div>
+  <div style="position:absolute;top:0;bottom:0;left:0;width:5px;background:linear-gradient(to bottom,#C9A96E 0%,rgba(201,169,110,.05) 100%);"></div>
+  <!-- Content -->
+  <div style="position:absolute;top:150px;left:80px;right:80px;font-size:18px;color:rgba(255,255,255,.35);letter-spacing:1px;">${esc(f.pretitle)}</div>
+  <div style="position:absolute;top:196px;left:80px;width:64px;height:2px;background:#C9A96E;"></div>
+  <div style="position:absolute;top:242px;left:80px;right:80px;font-family:'DM Serif Display',serif;font-size:148px;line-height:.98;color:#fff;">${nl(f.title)}</div>
+  <div style="position:absolute;top:760px;left:80px;right:80px;font-family:'DM Serif Display',serif;font-style:italic;font-size:48px;color:#C9A96E;line-height:1.3;">${esc(f.frase)}</div>
+  <!-- Stats -->
+  <div style="position:absolute;top:1020px;left:80px;right:80px;display:flex;gap:52px;">
+    <div><div style="font-size:60px;font-weight:900;color:#C9A96E;line-height:1;">500+</div><div style="font-size:15px;color:rgba(255,255,255,.3);margin-top:4px;letter-spacing:1px;text-transform:uppercase;">Vendidos</div></div>
+    <div><div style="font-size:60px;font-weight:900;color:#C9A96E;line-height:1;">100%</div><div style="font-size:15px;color:rgba(255,255,255,.3);margin-top:4px;letter-spacing:1px;text-transform:uppercase;">Verificados</div></div>
+    <div><div style="font-size:60px;font-weight:900;color:#C9A96E;line-height:1;">≥85%</div><div style="font-size:15px;color:rgba(255,255,255,.3);margin-top:4px;letter-spacing:1px;text-transform:uppercase;">Batería</div></div>
+  </div>
+  <!-- Divider -->
+  <div style="position:absolute;bottom:370px;left:80px;right:80px;height:1px;background:rgba(255,255,255,.08);"></div>
+  <!-- CTAs -->
+  <div style="position:absolute;bottom:268px;left:80px;font-size:26px;font-weight:600;color:#fff;">${esc(f.cta1)}</div>
+  <div style="position:absolute;bottom:208px;left:80px;font-size:24px;font-weight:400;color:rgba(255,255,255,.45);">${esc(f.cta2)}</div>
+  <div style="position:absolute;bottom:128px;right:80px;font-size:23px;font-weight:600;color:#C9A96E;">${esc(f.handle)}</div>
+</div>`
+  },
+
+]};
+
+// ── AUTH ─────────────────────────────────────────────────────────────
+function doLogin(e){
+  e.preventDefault();
+  const v=document.getElementById('auth-pwd').value;
+  const err=document.getElementById('auth-err');
+  if(v===PWD){
+    localStorage.setItem(SK,'ok');
+    document.getElementById('auth-screen').style.display='none';
+    document.getElementById('app').style.display='flex';
+    boot();
+  } else {
+    err.textContent='Contraseña incorrecta.';
+    document.getElementById('auth-pwd').value='';
+    setTimeout(()=>{err.textContent=''},2500);
+  }
+}
+function doLogout(){localStorage.removeItem(SK);location.reload()}
+
+// ── STATE ────────────────────────────────────────────────────────────
+let tab='feed', tplIdx=0, F={};
+const SCALE=454/1080;
+
+// ── APP ──────────────────────────────────────────────────────────────
+function boot(){renderList();pick(0)}
+
+function switchTab(t){
+  tab=t;tplIdx=0;
+  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('on',b.dataset.t===t));
+  const dim=t==='feed'?'1080 × 1080':'1080 × 1920';
+  document.getElementById('prev-lbl').textContent=`PREVIEW — ${dim} PX`;
+  renderList();pick(0);
+}
+
+function renderList(){
+  const ts=T[tab];
+  document.getElementById('side-lbl').textContent=`Templates (${ts.length})`;
+  document.getElementById('tpl-list').innerHTML=ts.map((t,i)=>`
+    <div class="card ${i===tplIdx?'on':''}" onclick="pick(${i})">
+      <div class="card-title">${t.title}</div>
+      <div class="card-desc">${t.desc}</div>
+    </div>`).join('');
+}
+
+function pick(i){
+  tplIdx=i;
+  const tpl=T[tab][i];
+  F={};tpl.fields.forEach(f=>{F[f.k]=f.d});
+  renderList();renderFields();renderPreview();renderIgText();
+}
+
+function renderFields(){
+  const tpl=T[tab][tplIdx];
+  const c=document.getElementById('fields');
+  c.innerHTML=tpl.fields.map(f=>`
+    <div class="fg">
+      <label class="fl">${f.l}</label>
+      ${f.t==='textarea'
+        ?`<textarea class="fi" data-k="${f.k}" oninput="onF(this)"></textarea>`
+        :`<input class="fi" type="text" data-k="${f.k}" oninput="onF(this)">`}
+    </div>`).join('');
+  c.querySelectorAll('[data-k]').forEach(el=>{el.value=F[el.dataset.k]});
+}
+
+function onF(el){F[el.dataset.k]=el.value;renderPreview();renderIgText()}
+
+function renderPreview(){
+  const tpl=T[tab][tplIdx];
+  const h=tab==='feed'?1080:1920;
+  const dh=Math.round(h*SCALE);
+  const wrap=document.getElementById('prev-wrap');
+  const inner=document.getElementById('prev-inner');
+  wrap.style.width='454px';wrap.style.height=dh+'px';
+  inner.style.width='1080px';inner.style.height=h+'px';
+  inner.style.transform=`scale(${SCALE})`;
+  inner.innerHTML=tpl.render(F);
+}
+
+function renderIgText(){
+  const ta=document.getElementById('ig-ta');
+  ta.value=T[tab][tplIdx].igText(F);
+  updateCnt();
+}
+
+function updateCnt(){
+  const n=document.getElementById('ig-ta').value.length;
+  document.getElementById('ig-cnt').textContent=`${n}/2200`;
+}
+
+function doCopy(){
+  const btn=document.querySelector('.copy-btn');
+  navigator.clipboard.writeText(document.getElementById('ig-ta').value).then(()=>{
+    const o=btn.textContent;btn.textContent='¡Copiado!';
+    setTimeout(()=>{btn.textContent=o},2000);
+  });
+}
+
+function doRestore(){
+  T[tab][tplIdx].fields.forEach(f=>{F[f.k]=f.d});
+  renderFields();renderPreview();renderIgText();
+}
+
+// ── DOWNLOAD ─────────────────────────────────────────────────────────
+async function doDownload(){
+  const btn=document.getElementById('dl-btn');
+  btn.disabled=true;btn.textContent='Generando…';
+  try{
+    const tpl=T[tab][tplIdx];
+    const w=1080,h=tab==='feed'?1080:1920;
+    const ghost=document.createElement('div');
+    ghost.style.cssText=`position:fixed;top:0;left:0;width:${w}px;height:${h}px;opacity:0.01;pointer-events:none;z-index:99999;overflow:hidden;`;
+    ghost.innerHTML=tpl.render(F);
+    document.body.appendChild(ghost);
+    await document.fonts.ready;
+    await new Promise(r=>setTimeout(r,150));
+    const canvas=await html2canvas(ghost.firstElementChild||ghost,{width:w,height:h,scale:1,useCORS:true,allowTaint:false,logging:false,backgroundColor:'#000000'});
+    document.body.removeChild(ghost);
+    const a=document.createElement('a');
+    a.download=`iphone-caleta-${tpl.id}.png`;
+    a.href=canvas.toDataURL('image/png');a.click();
+  }catch(err){console.error(err);alert('Error al generar. Intentá de nuevo.')}
+  finally{btn.disabled=false;updDlBtn()}
+}
+function updDlBtn(){
+  const dim=tab==='feed'?'1080×1080':'1080×1920';
+  document.getElementById('dl-btn').innerHTML=`↓ &nbsp;Descargar PNG (${dim})`;
+}
+
+// ── BOOT ─────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded',()=>{
+  if(localStorage.getItem(SK)==='ok'){
+    document.getElementById('auth-screen').style.display='none';
+    document.getElementById('app').style.display='flex';
+    boot();
+  }
+});
+</script>
+</body>
+</html>
