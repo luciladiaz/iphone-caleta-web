@@ -502,51 +502,45 @@ story: [
       const batColor=bat>=90?'#4ade80':bat>=80?'#C9A96E':'#f87171';
       return `
 <div style="width:1080px;height:1920px;background:#000;position:relative;overflow:hidden;font-family:'Inter',sans-serif;">
-  <!-- ZONA FOTO (top 1080px = cuadrado) -->
-  <div style="position:absolute;top:0;left:0;right:0;height:1080px;background:#0d0d0f;overflow:hidden;">
+  <!-- ZONA FOTO: ocupa casi todo -->
+  <div style="position:absolute;top:0;left:0;right:0;height:1500px;background:#0d0d0f;overflow:hidden;">
     <!-- Guía dashed para Canva -->
-    <div style="position:absolute;inset:24px;border:1.5px dashed rgba(201,169,110,.2);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;">
-      <div style="width:56px;height:56px;border:2px solid rgba(201,169,110,.3);border-radius:12px;display:flex;align-items:center;justify-content:center;">
-        <div style="font-size:30px;color:rgba(201,169,110,.35);line-height:1;">+</div>
+    <div style="position:absolute;inset:24px;border:1.5px dashed rgba(201,169,110,.18);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;">
+      <div style="width:64px;height:64px;border:2px solid rgba(201,169,110,.28);border-radius:14px;display:flex;align-items:center;justify-content:center;">
+        <div style="font-size:36px;color:rgba(201,169,110,.3);line-height:1;">+</div>
       </div>
-      <div style="font-size:14px;font-weight:600;letter-spacing:2px;color:rgba(201,169,110,.3);text-transform:uppercase;">Zona para foto</div>
-      <div style="font-size:12px;color:rgba(255,255,255,.15);letter-spacing:1px;">Agregar en Canva</div>
+      <div style="font-size:15px;font-weight:600;letter-spacing:2px;color:rgba(201,169,110,.28);text-transform:uppercase;">Zona para foto</div>
+      <div style="font-size:13px;color:rgba(255,255,255,.14);letter-spacing:1px;">Agregar en Canva</div>
     </div>
     <!-- Brand top -->
-    <div style="position:absolute;top:36px;left:44px;font-size:18px;font-weight:700;color:#fff;">iPhone Caleta</div>
-    <div style="position:absolute;top:32px;right:44px;background:rgba(201,169,110,.12);border:1px solid rgba(201,169,110,.45);border-radius:100px;padding:8px 20px;font-size:14px;font-weight:700;color:#C9A96E;letter-spacing:1px;text-transform:uppercase;">DISPONIBLE</div>
+    <div style="position:absolute;top:40px;left:48px;font-size:20px;font-weight:700;color:#fff;">iPhone Caleta</div>
+    <div style="position:absolute;top:35px;right:48px;background:rgba(201,169,110,.12);border:1px solid rgba(201,169,110,.4);border-radius:100px;padding:9px 24px;font-size:15px;font-weight:700;color:#C9A96E;letter-spacing:1.5px;text-transform:uppercase;">DISPONIBLE</div>
   </div>
   <!-- GOLD DIVIDER -->
-  <div style="position:absolute;top:1080px;left:0;right:0;height:3px;background:linear-gradient(to right,transparent,#C9A96E 15%,#C9A96E 85%,transparent);"></div>
-  <!-- SPECS SECTION -->
-  <div style="position:absolute;top:1104px;left:44px;right:44px;bottom:0;">
-    <!-- Model + GB -->
-    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:6px;">
-      <div style="font-family:'DM Serif Display',serif;font-size:72px;line-height:1;color:#fff;">${esc(f.modelo)}</div>
-      <div style="font-size:58px;font-weight:900;color:#C9A96E;line-height:1;">${esc(f.storage)}</div>
+  <div style="position:absolute;top:1500px;left:0;right:0;height:2px;background:linear-gradient(to right,transparent,#C9A96E 15%,#C9A96E 85%,transparent);"></div>
+  <!-- SPECS SECTION: compacta al fondo -->
+  <div style="position:absolute;top:1516px;left:48px;right:48px;bottom:52px;display:flex;flex-direction:column;justify-content:space-between;">
+    <!-- Fila 1: Modelo + GB -->
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;">
+      <div style="font-family:'DM Serif Display',serif;font-size:68px;line-height:1;color:#fff;">${esc(f.modelo)}</div>
+      <div style="font-size:52px;font-weight:900;color:#C9A96E;line-height:1;">${esc(f.storage)}</div>
     </div>
-    <!-- Color + estado -->
-    <div style="font-size:22px;color:rgba(255,255,255,.38);margin-bottom:28px;">${esc(f.color)} · ${esc(f.estado)}</div>
-    <!-- Battery -->
-    <div style="margin-bottom:24px;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-        <div style="font-size:14px;font-weight:700;letter-spacing:2px;color:rgba(255,255,255,.4);text-transform:uppercase;">Batería</div>
-        <div style="font-size:26px;font-weight:800;color:${batColor};">${bat}%</div>
+    <!-- Fila 2: Color + estado -->
+    <div style="font-size:20px;color:rgba(255,255,255,.35);">${esc(f.color)} · ${esc(f.estado)}</div>
+    <!-- Fila 3: Battery bar -->
+    <div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <div style="font-size:13px;font-weight:700;letter-spacing:2px;color:rgba(255,255,255,.35);text-transform:uppercase;">Batería</div>
+        <div style="font-size:24px;font-weight:800;color:${batColor};">${bat}%</div>
       </div>
-      <div style="width:100%;height:9px;background:rgba(255,255,255,.07);border-radius:5px;">
-        <div style="width:${bat}%;height:100%;background:${batColor};border-radius:5px;"></div>
+      <div style="width:100%;height:8px;background:rgba(255,255,255,.08);border-radius:4px;">
+        <div style="width:${bat}%;height:100%;background:${batColor};border-radius:4px;"></div>
       </div>
     </div>
-    <!-- Verification -->
-    <div style="display:flex;gap:28px;margin-bottom:30px;">
-      <div style="font-size:17px;color:rgba(255,255,255,.45);">✓ IMEI limpio</div>
-      <div style="font-size:17px;color:rgba(255,255,255,.45);">✓ Face ID</div>
-      <div style="font-size:17px;color:rgba(255,255,255,.45);">✓ Verificado</div>
-    </div>
-    <!-- Price + handle -->
+    <!-- Fila 4: Verificación + precio + handle -->
     <div style="display:flex;justify-content:space-between;align-items:center;">
-      <div style="font-size:28px;font-weight:700;color:#C9A96E;">${esc(f.precio)}</div>
-      <div style="font-size:19px;font-weight:600;color:rgba(255,255,255,.3);">${esc(f.handle)}</div>
+      <div style="font-size:24px;font-weight:700;color:#C9A96E;">${esc(f.precio)}</div>
+      <div style="font-size:18px;font-weight:600;color:rgba(255,255,255,.28);">${esc(f.handle)}</div>
     </div>
   </div>
 </div>`
