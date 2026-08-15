@@ -220,6 +220,79 @@
     }
     .stock-note a { color: var(--gold); }
 
+    /* ── Plan Canje ── */
+    .canje { background: var(--bg); }
+    .canje-header { margin-bottom: 44px; }
+    .canje-card {
+      background: var(--s2); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 32px;
+      max-width: 620px;
+      display: flex; flex-direction: column; gap: 22px;
+      position: relative; overflow: hidden;
+    }
+    .canje-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--gold), var(--gold2));
+    }
+    .canje-field { display: flex; flex-direction: column; gap: 8px; }
+    .canje-field label {
+      font-size: 12px; font-weight: 700; color: var(--text2);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .canje-step {
+      width: 18px; height: 18px; border-radius: 50%;
+      background: var(--gold); color: #000;
+      font-size: 10px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .canje-field select {
+      appearance: none; -webkit-appearance: none;
+      background: var(--s3) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%2386868b' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 16px center;
+      border: 1px solid var(--border); color: var(--text);
+      font-family: var(--font); font-size: 14px; font-weight: 500;
+      padding: 13px 40px 13px 16px; border-radius: var(--radius-s);
+      cursor: pointer; transition: border-color .2s;
+    }
+    .canje-field select:hover { border-color: var(--gold); }
+    .canje-field select:focus { outline: none; border-color: var(--gold); }
+    .canje-field select:invalid { color: var(--text3); }
+    .canje-result {
+      border: 1px dashed var(--border); border-radius: var(--radius-s);
+      padding: 20px; transition: border-color .2s, background .2s;
+    }
+    .canje-placeholder { font-size: 13px; color: var(--text3); text-align: center; }
+    .canje-row {
+      display: flex; justify-content: space-between; align-items: baseline;
+      font-size: 13px; color: var(--text2); padding: 6px 0;
+    }
+    .canje-row span:last-child { font-variant-numeric: tabular-nums; font-weight: 600; color: var(--text); }
+    .canje-row.negative span:last-child { color: var(--gold); }
+    .canje-divider { border-top: 1px solid var(--border); margin: 8px 0; }
+    .canje-row.total { font-size: 15px; font-weight: 700; color: var(--text); padding-top: 10px; }
+    .canje-row.total span:last-child { font-size: 24px; font-weight: 800; color: var(--gold); font-variant-numeric: tabular-nums; }
+    .canje-result.ok, .canje-result.exact { border-style: solid; border-color: rgba(48,209,88,.35); background: rgba(48,209,88,.05); }
+    .canje-result.exact .canje-row.total span:last-child { color: var(--green); }
+    .canje-result.blocked { border-style: solid; border-color: rgba(255,69,58,.35); background: rgba(255,69,58,.05); }
+    .canje-blocked-msg { font-size: 13px; color: #ff8a80; line-height: 1.7; margin-bottom: 10px; }
+    .canje-blocked-msg strong { color: #ff453a; }
+    .canje-suggest { font-size: 12px; color: var(--text3); line-height: 1.7; }
+    .canje-wa-btn {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      background: var(--wa); color: #fff;
+      padding: 14px 24px; border-radius: 99px;
+      font-size: 14px; font-weight: 700;
+      transition: opacity .2s, transform .2s;
+    }
+    .canje-wa-btn:hover { opacity: .88; transform: translateY(-2px); }
+    .canje-disclaimer {
+      margin-top: 24px; font-size: 12px; color: var(--text3);
+      max-width: 620px; line-height: 1.7;
+    }
+    @media (max-width: 480px) {
+      .canje-card { padding: 24px; }
+    }
+
     /* ── Por qué ── */
     .why { background: var(--bg); }
     .why-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; margin-top: 48px; }
@@ -393,6 +466,7 @@
     </a>
     <div class="nav-links">
       <a href="#stock">Stock</a>
+      <a href="#canje">Plan Canje</a>
       <a href="#porquenosotros">Por qué nosotros</a>
       <a href="#proceso">Verificación</a>
       <a href="#contacto">Contacto</a>
@@ -409,6 +483,7 @@
   <!-- MOBILE MENU -->
   <div class="nav-mobile-menu" id="mobileMenu">
     <a href="#stock" onclick="closeMenu()">Stock disponible</a>
+    <a href="#canje" onclick="closeMenu()">Plan Canje</a>
     <a href="#porquenosotros" onclick="closeMenu()">Por qué nosotros</a>
     <a href="#proceso" onclick="closeMenu()">Cómo verificamos</a>
     <a href="#contacto" onclick="closeMenu()">Contacto</a>
@@ -628,6 +703,55 @@
     </div>
   </section>
 
+  <!-- PLAN CANJE -->
+  <!-- ════════════════════════════════════════════════════
+       Esta sección tiene DOS listas editables en el <script>
+       más abajo, buscá "PLAN CANJE — DATOS":
+
+       1) STOCK_PHONES  → tiene que ser un espejo EXACTO de las
+          phone-card de arriba (modelo + storage + color + precio).
+          Cuando actualices el stock, actualizá también esta lista.
+
+       2) VALORES_CANJE → a cuánto tomás cada modelo como parte
+          de pago. Es la tabla de toma vigente.
+       ════════════════════════════════════════════════════ -->
+  <section class="canje" id="canje">
+    <div class="container">
+      <div class="canje-header fade-in">
+        <p class="section-tag">Plan Canje</p>
+        <h2 class="section-title">Calculá tu plan canje al instante</h2>
+        <p class="section-sub">Elegí el iPhone que querés llevarte de nuestro stock y el que vas a entregar como parte de pago. Te mostramos la diferencia exacta a pagar.</p>
+      </div>
+
+      <div class="canje-card fade-in">
+        <div class="canje-field">
+          <label for="canjeStockSelect"><span class="canje-step">1</span> iPhone que querés llevarte (stock disponible)</label>
+          <select id="canjeStockSelect">
+            <option value="" selected disabled>Elegí un modelo...</option>
+          </select>
+        </div>
+
+        <div class="canje-field">
+          <label for="canjeTradeSelect"><span class="canje-step">2</span> iPhone que entregás como parte de pago</label>
+          <select id="canjeTradeSelect">
+            <option value="" selected disabled>Elegí tu modelo...</option>
+          </select>
+        </div>
+
+        <div class="canje-result" id="canjeResult">
+          <p class="canje-placeholder">Elegí ambos modelos para ver el cálculo.</p>
+        </div>
+
+        <a href="#" id="canjeWaBtn" class="canje-wa-btn" target="_blank" style="display:none;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Confirmar este canje por WhatsApp
+        </a>
+      </div>
+
+      <p class="canje-disclaimer">* Valores de toma vigentes para equipos con batería ≥86% que no requieran paso por laboratorio. Si el equipo necesita reparación, se descuenta el costo del valor de toma. El valor final está sujeto a verificación del estado real (batería, pantalla, IMEI) al momento de la entrega.</p>
+    </div>
+  </section>
+
   <!-- POR QUÉ -->
   <section class="why" id="porquenosotros">
     <div class="container">
@@ -832,6 +956,122 @@
       entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
     }, { threshold: 0.12 });
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // ════════════════════════════════════════════════════
+    // PLAN CANJE — DATOS
+    // ════════════════════════════════════════════════════
+
+    // 1) STOCK — espejo de la sección "Stock" de arriba.
+    const STOCK_PHONES = [
+      { id: "12pro-128-azul",      label: "iPhone 12 Pro 128GB · Azul",                price: 400 },
+      { id: "13-128-negro",        label: "iPhone 13 128GB · Negro",                   price: 450 },
+      { id: "13-128-blanco",       label: "iPhone 13 128GB · Blanco",                  price: 450 },
+      { id: "13pro-128-azul",      label: "iPhone 13 Pro 128GB · Azul",                price: 500 },
+      { id: "14promax-128-dorado", label: "iPhone 14 Pro Max 128GB · Dorado",          price: 650 },
+      { id: "15-128-negro",        label: "iPhone 15 128GB · Negro",                   price: 600 },
+      { id: "16-128-blanco",       label: "iPhone 16 128GB · Blanco",                  price: 750 },
+      { id: "17pro-256-azul",      label: "iPhone 17 Pro 256GB · Azul (Sellado)",      price: 1350 },
+      { id: "17pro-256-naranja",   label: "iPhone 17 Pro 256GB · Naranja (Sellado)",   price: 1350 },
+      { id: "17promax-256-blanco", label: "iPhone 17 Pro Max 256GB · Blanco (Sellado)", price: 1550 },
+    ];
+
+    // 2) !! EDITAR ACÁ !! — tabla de toma vigente (Agosto 2026).
+    //    Válida para equipos con batería ≥86% que no requieran laboratorio.
+    const VALORES_CANJE = [
+      { id: "11",        label: "iPhone 11",             value: 50 },
+      { id: "11pro",     label: "iPhone 11 Pro",         value: 50 },
+      { id: "11promax",  label: "iPhone 11 Pro Max",     value: 100 },
+      { id: "12",        label: "iPhone 12",             value: 50 },
+      { id: "12pro",     label: "iPhone 12 Pro",         value: 200 },
+      { id: "12promax",  label: "iPhone 12 Pro Max",     value: 250 },
+      { id: "13",        label: "iPhone 13",             value: 200 },
+      { id: "13pro",     label: "iPhone 13 Pro",         value: 300 },
+      { id: "13promax",  label: "iPhone 13 Pro Max",     value: 350 },
+      { id: "14",        label: "iPhone 14",             value: 300 },
+      { id: "14pro",     label: "iPhone 14 Pro",         value: 400 },
+      { id: "14promax",  label: "iPhone 14 Pro Max",     value: 450 },
+      { id: "15",        label: "iPhone 15",             value: 400 },
+      { id: "15pro",     label: "iPhone 15 Pro",         value: 500 },
+      { id: "15promax",  label: "iPhone 15 Pro Max",     value: 550 },
+      { id: "16",        label: "iPhone 16",             value: 600 },
+      { id: "16pro",     label: "iPhone 16 Pro",         value: 650 },
+      { id: "16promax",  label: "iPhone 16 Pro Max",     value: 800 },
+      { id: "17",        label: "iPhone 17",             value: 800 },
+      { id: "17pro",     label: "iPhone 17 Pro",         value: 1050 },
+      { id: "17promax",  label: "iPhone 17 Pro Max",     value: 1150 },
+    ];
+
+    const canjeStockSelect = document.getElementById('canjeStockSelect');
+    const canjeTradeSelect = document.getElementById('canjeTradeSelect');
+    const canjeResultBox   = document.getElementById('canjeResult');
+    const canjeWaBtn       = document.getElementById('canjeWaBtn');
+
+    STOCK_PHONES.forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p.id;
+      opt.textContent = `${p.label} — USD ${p.price}`;
+      canjeStockSelect.appendChild(opt);
+    });
+
+    VALORES_CANJE.forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p.id;
+      opt.textContent = `${p.label} (toma: USD ${p.value})`;
+      canjeTradeSelect.appendChild(opt);
+    });
+
+    function fmtCanje(n) {
+      return new Intl.NumberFormat('es-AR').format(n);
+    }
+
+    function calcularCanje() {
+      const stockId = canjeStockSelect.value;
+      const tradeId = canjeTradeSelect.value;
+
+      if (!stockId || !tradeId) {
+        canjeResultBox.className = 'canje-result';
+        canjeResultBox.innerHTML = '<p class="canje-placeholder">Elegí ambos modelos para ver el cálculo.</p>';
+        canjeWaBtn.style.display = 'none';
+        return;
+      }
+
+      const stockPhone = STOCK_PHONES.find(p => p.id === stockId);
+      const tradePhone = VALORES_CANJE.find(p => p.id === tradeId);
+      const diferencia = stockPhone.price - tradePhone.value;
+
+      if (diferencia < 0) {
+        // La toma vale MÁS que el equipo elegido: combinación no permitida.
+        canjeResultBox.className = 'canje-result blocked';
+        const mejores = STOCK_PHONES.filter(p => p.price >= tradePhone.value);
+        const sugerencia = mejores.length
+          ? `Con ese canje podés acceder a: ${mejores.map(p => p.label).join(', ')}.`
+          : 'Por ahora no hay en stock un modelo que alcance ese valor de canje.';
+        canjeResultBox.innerHTML = `
+          <p class="canje-blocked-msg"><strong>Ese canje no aplica a este modelo.</strong> Tu ${tradePhone.label} vale USD ${fmtCanje(tradePhone.value)} de toma, más que el ${stockPhone.label} (USD ${fmtCanje(stockPhone.price)}). Elegí un iPhone de stock de igual o mayor valor.</p>
+          <p class="canje-suggest">${sugerencia}</p>
+        `;
+        canjeWaBtn.style.display = 'none';
+        return;
+      }
+
+      const esExacto = diferencia === 0;
+      canjeResultBox.className = 'canje-result ' + (esExacto ? 'exact' : 'ok');
+      canjeResultBox.innerHTML = `
+        <div class="canje-row"><span>${stockPhone.label}</span><span>USD ${fmtCanje(stockPhone.price)}</span></div>
+        <div class="canje-row negative"><span>Parte de pago — ${tradePhone.label}</span><span>− USD ${fmtCanje(tradePhone.value)}</span></div>
+        <div class="canje-divider"></div>
+        <div class="canje-row total"><span>${esExacto ? 'Sin diferencia a pagar' : 'Diferencia a pagar'}</span><span>USD ${fmtCanje(diferencia)}</span></div>
+      `;
+
+      const msg = esExacto
+        ? `Hola! Quiero coordinar el plan canje: entrego mi ${tradePhone.label} por un ${stockPhone.label}. Según la calculadora no tengo diferencia a pagar. ¿Seguimos?`
+        : `Hola! Quiero coordinar el plan canje: entrego mi ${tradePhone.label} por un ${stockPhone.label}. Según la calculadora la diferencia a pagar es USD ${fmtCanje(diferencia)}. ¿Seguimos?`;
+      canjeWaBtn.href = `https://wa.me/5493364400111?text=${encodeURIComponent(msg)}`;
+      canjeWaBtn.style.display = 'flex';
+    }
+
+    canjeStockSelect.addEventListener('change', calcularCanje);
+    canjeTradeSelect.addEventListener('change', calcularCanje);
   </script>
 </body>
 </html>
