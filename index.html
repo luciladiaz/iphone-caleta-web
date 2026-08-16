@@ -26,32 +26,35 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "ElectronicsStore",
-    "name": "iPhone Caleta",
-    "image": "https://iphonecaleta.com.ar/og-image.png",
-    "url": "https://iphonecaleta.com.ar/",
-    "telephone": "+5493364400111",
-    "priceRange": "USD 400 - USD 1550",
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "Caleta Olivia",
-      "addressRegion": "Santa Cruz",
-      "addressCountry": "AR"
-    },
-    "sameAs": [
-      "https://www.instagram.com/iphonecaleta.co/"
-    ],
-    "makesOffer": [
-      { "@type": "Offer", "priceCurrency": "USD", "price": "400", "availability": "https://schema.org/InStock", "itemOffered": { "@type": "Product", "name": "iPhone 12 Pro 128GB Azul", "description": "Batería 85%. Equipo usado verificado.", "itemCondition": "https://schema.org/UsedCondition" } },
-      { "@type": "Offer", "priceCurrency": "USD", "price": "450", "availability": "https://schema.org/InStock", "itemOffered": { "@type": "Product", "name": "iPhone 13 128GB Negro", "description": "Batería 100%. Equipo usado verificado.", "itemCondition": "https://schema.org/UsedCondition" } },
-      { "@type": "Offer", "priceCurrency": "USD", "price": "450", "availability": "https://schema.org/InStock", "itemOffered": { "@type": "Product", "name": "iPhone 13 128GB Blanco", "description": "Batería 100%. Equipo usado verificado.", "itemCondition": "https://schema.org/UsedCondition" } },
-      { "@type": "Offer", "priceCurrency": "USD", "price": "500", "availability": "https://schema.org/InStock", "itemOffered": { "@type": "Product", "name": "iPhone 13 Pro 128GB Azul", "description": "Batería 100%. Equipo usado verificado.", "itemCondition": "https://schema.org/UsedCondition" } },
-      { "@type": "Offer", "priceCurrency": "USD", "price": "650", "availability": "https://schema.org/InStock", "itemOffered": { "@type": "Product", "name": "iPhone 14 Pro Max 128GB Dorado", "description": "Batería 100%. Equipo usado verificado.", "itemCondition": "https://schema.org/UsedCondition" } },
-      { "@type": "Offer", "priceCurrency": "USD", "price": "600", "availability": "https://schema.org/InStock", "itemOffered": { "@type": "Product", "name": "iPhone 15 128GB Negro", "description": "Batería 86%. Equipo usado verificado.", "itemCondition": "https://schema.org/UsedCondition" } },
-      { "@type": "Offer", "priceCurrency": "USD", "price": "750", "availability": "https://schema.org/InStock", "itemOffered": { "@type": "Product", "name": "iPhone 16 128GB Blanco", "description": "Batería 95%. Equipo usado verificado.", "itemCondition": "https://schema.org/UsedCondition" } },
-      { "@type": "Offer", "priceCurrency": "USD", "price": "1350", "availability": "https://schema.org/InStock", "itemOffered": { "@type": "Product", "name": "iPhone 17 Pro 256GB Azul", "description": "Sellado de fábrica.", "itemCondition": "https://schema.org/NewCondition" } },
-      { "@type": "Offer", "priceCurrency": "USD", "price": "1350", "availability": "https://schema.org/InStock", "itemOffered": { "@type": "Product", "name": "iPhone 17 Pro 256GB Naranja", "description": "Sellado de fábrica.", "itemCondition": "https://schema.org/NewCondition" } },
-      { "@type": "Offer", "priceCurrency": "USD", "price": "1550", "availability": "https://schema.org/InStock", "itemOffered": { "@type": "Product", "name": "iPhone 17 Pro Max 256GB Blanco", "description": "Sellado de fábrica.", "itemCondition": "https://schema.org/NewCondition" } }
+    "@graph": [
+      {
+        "@type": "ElectronicsStore",
+        "@id": "https://iphonecaleta.com.ar/#business",
+        "name": "iPhone Caleta",
+        "image": "https://iphonecaleta.com.ar/og-image.png",
+        "url": "https://iphonecaleta.com.ar/",
+        "telephone": "+5493364400111",
+        "priceRange": "USD 400 - USD 1550",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Caleta Olivia",
+          "addressRegion": "Santa Cruz",
+          "addressCountry": "AR"
+        },
+        "sameAs": [
+          "https://www.instagram.com/iphonecaleta.co/"
+        ]
+      },
+      { "@type": "Product", "name": "iPhone 12 Pro 128GB Azul", "description": "Batería 85%. Equipo usado verificado.", "brand": { "@type": "Brand", "name": "Apple" }, "offers": { "@type": "Offer", "priceCurrency": "USD", "price": "400", "availability": "https://schema.org/InStock", "itemCondition": "https://schema.org/UsedCondition", "url": "https://iphonecaleta.com.ar/#stock", "seller": { "@id": "https://iphonecaleta.com.ar/#business" } } },
+      { "@type": "Product", "name": "iPhone 13 128GB Negro", "description": "Batería 100%. Equipo usado verificado.", "brand": { "@type": "Brand", "name": "Apple" }, "offers": { "@type": "Offer", "priceCurrency": "USD", "price": "450", "availability": "https://schema.org/InStock", "itemCondition": "https://schema.org/UsedCondition", "url": "https://iphonecaleta.com.ar/#stock", "seller": { "@id": "https://iphonecaleta.com.ar/#business" } } },
+      { "@type": "Product", "name": "iPhone 13 128GB Blanco", "description": "Batería 100%. Equipo usado verificado.", "brand": { "@type": "Brand", "name": "Apple" }, "offers": { "@type": "Offer", "priceCurrency": "USD", "price": "450", "availability": "https://schema.org/InStock", "itemCondition": "https://schema.org/UsedCondition", "url": "https://iphonecaleta.com.ar/#stock", "seller": { "@id": "https://iphonecaleta.com.ar/#business" } } },
+      { "@type": "Product", "name": "iPhone 13 Pro 128GB Azul", "description": "Batería 100%. Equipo usado verificado.", "brand": { "@type": "Brand", "name": "Apple" }, "offers": { "@type": "Offer", "priceCurrency": "USD", "price": "500", "availability": "https://schema.org/InStock", "itemCondition": "https://schema.org/UsedCondition", "url": "https://iphonecaleta.com.ar/#stock", "seller": { "@id": "https://iphonecaleta.com.ar/#business" } } },
+      { "@type": "Product", "name": "iPhone 14 Pro Max 128GB Dorado", "description": "Batería 100%. Equipo usado verificado.", "brand": { "@type": "Brand", "name": "Apple" }, "offers": { "@type": "Offer", "priceCurrency": "USD", "price": "650", "availability": "https://schema.org/InStock", "itemCondition": "https://schema.org/UsedCondition", "url": "https://iphonecaleta.com.ar/#stock", "seller": { "@id": "https://iphonecaleta.com.ar/#business" } } },
+      { "@type": "Product", "name": "iPhone 15 128GB Negro", "description": "Batería 86%. Equipo usado verificado.", "brand": { "@type": "Brand", "name": "Apple" }, "offers": { "@type": "Offer", "priceCurrency": "USD", "price": "600", "availability": "https://schema.org/InStock", "itemCondition": "https://schema.org/UsedCondition", "url": "https://iphonecaleta.com.ar/#stock", "seller": { "@id": "https://iphonecaleta.com.ar/#business" } } },
+      { "@type": "Product", "name": "iPhone 16 128GB Blanco", "description": "Batería 95%. Equipo usado verificado.", "brand": { "@type": "Brand", "name": "Apple" }, "offers": { "@type": "Offer", "priceCurrency": "USD", "price": "750", "availability": "https://schema.org/InStock", "itemCondition": "https://schema.org/UsedCondition", "url": "https://iphonecaleta.com.ar/#stock", "seller": { "@id": "https://iphonecaleta.com.ar/#business" } } },
+      { "@type": "Product", "name": "iPhone 17 Pro 256GB Azul", "description": "Sellado de fábrica.", "brand": { "@type": "Brand", "name": "Apple" }, "offers": { "@type": "Offer", "priceCurrency": "USD", "price": "1350", "availability": "https://schema.org/InStock", "itemCondition": "https://schema.org/NewCondition", "url": "https://iphonecaleta.com.ar/#stock", "seller": { "@id": "https://iphonecaleta.com.ar/#business" } } },
+      { "@type": "Product", "name": "iPhone 17 Pro 256GB Naranja", "description": "Sellado de fábrica.", "brand": { "@type": "Brand", "name": "Apple" }, "offers": { "@type": "Offer", "priceCurrency": "USD", "price": "1350", "availability": "https://schema.org/InStock", "itemCondition": "https://schema.org/NewCondition", "url": "https://iphonecaleta.com.ar/#stock", "seller": { "@id": "https://iphonecaleta.com.ar/#business" } } },
+      { "@type": "Product", "name": "iPhone 17 Pro Max 256GB Blanco", "description": "Sellado de fábrica.", "brand": { "@type": "Brand", "name": "Apple" }, "offers": { "@type": "Offer", "priceCurrency": "USD", "price": "1550", "availability": "https://schema.org/InStock", "itemCondition": "https://schema.org/NewCondition", "url": "https://iphonecaleta.com.ar/#stock", "seller": { "@id": "https://iphonecaleta.com.ar/#business" } } }
     ]
   }
   </script>
@@ -582,7 +585,9 @@
        para que no se desincronicen:
        1) Las phone-card de acá abajo
        2) El array STOCK_PHONES en el <script> (sección Plan Canje)
-       3) El "makesOffer" del JSON-LD al principio del <head>
+       3) Los nodos "Product" del @graph JSON-LD al principio del <head>
+          (cada uno con su propio "offers" — NO anidar Product dentro
+          de Offer.itemOffered, Google no lo detecta bien así)
        ════════════════════════════════════════════════════ -->
   <section class="stock" id="stock">
     <div class="container">
