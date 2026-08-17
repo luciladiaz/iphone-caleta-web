@@ -1102,7 +1102,7 @@
     VALORES_CANJE.forEach(p => {
       const opt = document.createElement('option');
       opt.value = p.id;
-      opt.textContent = `${p.label} (toma: USD ${p.value})`;
+      opt.textContent = p.label;
       canjeTradeSelect.appendChild(opt);
     });
 
@@ -1133,7 +1133,7 @@
           ? `Con ese canje podés acceder a: ${mejores.map(p => p.label).join(', ')}.`
           : 'Por ahora no hay en stock un modelo que alcance ese valor de canje.';
         canjeResultBox.innerHTML = `
-          <p class="canje-blocked-msg"><strong>Ese canje no aplica a este modelo.</strong> Tu ${tradePhone.label} vale USD ${fmtCanje(tradePhone.value)} de toma, más que el ${stockPhone.label} (USD ${fmtCanje(stockPhone.price)}). Elegí un iPhone de stock de igual o mayor valor.</p>
+          <p class="canje-blocked-msg"><strong>Ese canje no aplica a este modelo.</strong> Tu ${tradePhone.label} no alcanza para el ${stockPhone.label}. Elegí un iPhone de stock de igual o mayor valor.</p>
           <p class="canje-suggest">${sugerencia}</p>
         `;
         canjeWaBtn.style.display = 'none';
@@ -1144,7 +1144,7 @@
       canjeResultBox.className = 'canje-result ' + (esExacto ? 'exact' : 'ok');
       canjeResultBox.innerHTML = `
         <div class="canje-row"><span>${stockPhone.label}</span><span>USD ${fmtCanje(stockPhone.price)}</span></div>
-        <div class="canje-row negative"><span>Parte de pago — ${tradePhone.label}</span><span>− USD ${fmtCanje(tradePhone.value)}</span></div>
+        <div class="canje-row negative"><span>Parte de pago — ${tradePhone.label}</span></div>
         <div class="canje-divider"></div>
         <div class="canje-row total"><span>${esExacto ? 'Sin diferencia a pagar' : 'Diferencia a pagar'}</span><span>USD ${fmtCanje(diferencia)}</span></div>
       `;
