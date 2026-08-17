@@ -274,14 +274,21 @@
     .phone-price { margin-top: auto; }
     .price-from { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: .5px; }
     .price-val { font-size: 22px; font-weight: 800; color: var(--gold); }
+    .phone-actions { display: flex; gap: 6px; }
     .phone-cta {
-      display: flex; align-items: center; justify-content: center; gap: 6px;
+      flex: 1;
+      display: flex; align-items: center; justify-content: center; gap: 4px;
       background: var(--wa); color: #fff;
-      padding: 10px; border-radius: var(--radius-s);
-      font-size: 13px; font-weight: 600;
+      padding: 10px 4px; border-radius: var(--radius-s);
+      font-size: 12px; font-weight: 600; white-space: nowrap;
+      border: none; cursor: pointer; font-family: var(--font);
       transition: opacity .2s;
     }
     .phone-cta:hover { opacity: .85; }
+    .phone-cta-canje {
+      background: transparent; border: 1px solid var(--gold); color: var(--gold);
+    }
+    .phone-cta-canje:hover { opacity: 1; background: rgba(201,169,110,.1); }
     .stock-note {
       margin-top: 32px; text-align: center;
       font-size: 13px; color: var(--text3);
@@ -604,7 +611,7 @@
       </div>
       <div class="stock-grid">
 
-        <div class="phone-card fade-in">
+        <div class="phone-card fade-in" data-stock-id="12pro-128-azul">
           <span class="phone-badge badge-disponible">Disponible</span>
           <div class="phone-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2.2"/><line x1="10.3" y1="5" x2="13.7" y2="5"/><circle cx="12" cy="19" r="0.6" fill="currentColor" stroke="none"/></svg></div>
           <div>
@@ -618,10 +625,13 @@
             <div class="price-from">Precio</div>
             <div class="price-val">USD 400</div>
           </div>
-          <a href="https://wa.me/5493364400111?text=Hola!%20Me%20interesa%20el%20iPhone%2012%20Pro%20128GB%20Azul.%20%C2%BFEst%C3%A1%20disponible%3F" target="_blank" class="phone-cta">Consultar →</a>
+          <div class="phone-actions">
+            <a href="https://wa.me/5493364400111?text=Hola!%20Me%20interesa%20el%20iPhone%2012%20Pro%20128GB%20Azul.%20%C2%BFEst%C3%A1%20disponible%3F" target="_blank" class="phone-cta">Comprar →</a>
+            <button type="button" class="phone-cta phone-cta-canje" data-stock-id="12pro-128-azul">Plan Canje</button>
+          </div>
         </div>
 
-        <div class="phone-card fade-in">
+        <div class="phone-card fade-in" data-stock-id="13-128-negro">
           <span class="phone-badge badge-disponible">Disponible</span>
           <div class="phone-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2.2"/><line x1="10.3" y1="5" x2="13.7" y2="5"/><circle cx="12" cy="19" r="0.6" fill="currentColor" stroke="none"/></svg></div>
           <div>
@@ -635,10 +645,13 @@
             <div class="price-from">Precio</div>
             <div class="price-val">USD 450</div>
           </div>
-          <a href="https://wa.me/5493364400111?text=Hola!%20Me%20interesa%20el%20iPhone%2013%20128GB%20Negro.%20%C2%BFEst%C3%A1%20disponible%3F" target="_blank" class="phone-cta">Consultar →</a>
+          <div class="phone-actions">
+            <a href="https://wa.me/5493364400111?text=Hola!%20Me%20interesa%20el%20iPhone%2013%20128GB%20Negro.%20%C2%BFEst%C3%A1%20disponible%3F" target="_blank" class="phone-cta">Comprar →</a>
+            <button type="button" class="phone-cta phone-cta-canje" data-stock-id="13-128-negro">Plan Canje</button>
+          </div>
         </div>
 
-        <div class="phone-card fade-in">
+        <div class="phone-card fade-in" data-stock-id="13-128-blanco">
           <span class="phone-badge badge-disponible">Disponible</span>
           <div class="phone-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2.2"/><line x1="10.3" y1="5" x2="13.7" y2="5"/><circle cx="12" cy="19" r="0.6" fill="currentColor" stroke="none"/></svg></div>
           <div>
@@ -652,10 +665,13 @@
             <div class="price-from">Precio</div>
             <div class="price-val">USD 450</div>
           </div>
-          <a href="https://wa.me/5493364400111?text=Hola!%20Me%20interesa%20el%20iPhone%2013%20128GB%20Blanco.%20%C2%BFEst%C3%A1%20disponible%3F" target="_blank" class="phone-cta">Consultar →</a>
+          <div class="phone-actions">
+            <a href="https://wa.me/5493364400111?text=Hola!%20Me%20interesa%20el%20iPhone%2013%20128GB%20Blanco.%20%C2%BFEst%C3%A1%20disponible%3F" target="_blank" class="phone-cta">Comprar →</a>
+            <button type="button" class="phone-cta phone-cta-canje" data-stock-id="13-128-blanco">Plan Canje</button>
+          </div>
         </div>
 
-        <div class="phone-card fade-in">
+        <div class="phone-card fade-in" data-stock-id="13pro-128-azul">
           <span class="phone-badge badge-disponible">Disponible</span>
           <div class="phone-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2.2"/><line x1="10.3" y1="5" x2="13.7" y2="5"/><circle cx="12" cy="19" r="0.6" fill="currentColor" stroke="none"/></svg></div>
           <div>
@@ -669,10 +685,13 @@
             <div class="price-from">Precio</div>
             <div class="price-val">USD 500</div>
           </div>
-          <a href="https://wa.me/5493364400111?text=Hola!%20Me%20interesa%20el%20iPhone%2013%20Pro%20128GB%20Azul.%20%C2%BFEst%C3%A1%20disponible%3F" target="_blank" class="phone-cta">Consultar →</a>
+          <div class="phone-actions">
+            <a href="https://wa.me/5493364400111?text=Hola!%20Me%20interesa%20el%20iPhone%2013%20Pro%20128GB%20Azul.%20%C2%BFEst%C3%A1%20disponible%3F" target="_blank" class="phone-cta">Comprar →</a>
+            <button type="button" class="phone-cta phone-cta-canje" data-stock-id="13pro-128-azul">Plan Canje</button>
+          </div>
         </div>
 
-        <div class="phone-card fade-in">
+        <div class="phone-card fade-in" data-stock-id="14promax-128-dorado">
           <span class="phone-badge badge-disponible">Disponible</span>
           <div class="phone-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2.2"/><line x1="10.3" y1="5" x2="13.7" y2="5"/><circle cx="12" cy="19" r="0.6" fill="currentColor" stroke="none"/></svg></div>
           <div>
@@ -686,10 +705,13 @@
             <div class="price-from">Precio</div>
             <div class="price-val">USD 650</div>
           </div>
-          <a href="https://wa.me/5493364400111?text=Hola!%20Me%20interesa%20el%20iPhone%2014%20Pro%20Max%20128GB%20Dorado.%20%C2%BFEst%C3%A1%20disponible%3F" target="_blank" class="phone-cta">Consultar →</a>
+          <div class="phone-actions">
+            <a href="https://wa.me/5493364400111?text=Hola!%20Me%20interesa%20el%20iPhone%2014%20Pro%20Max%20128GB%20Dorado.%20%C2%BFEst%C3%A1%20disponible%3F" target="_blank" class="phone-cta">Comprar →</a>
+            <button type="button" class="phone-cta phone-cta-canje" data-stock-id="14promax-128-dorado">Plan Canje</button>
+          </div>
         </div>
 
-        <div class="phone-card fade-in">
+        <div class="phone-card fade-in" data-stock-id="15-128-negro">
           <span class="phone-badge badge-disponible">Disponible</span>
           <div class="phone-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2.2"/><line x1="10.3" y1="5" x2="13.7" y2="5"/><circle cx="12" cy="19" r="0.6" fill="currentColor" stroke="none"/></svg></div>
           <div>
@@ -703,10 +725,13 @@
             <div class="price-from">Precio</div>
             <div class="price-val">USD 600</div>
           </div>
-          <a href="https://wa.me/5493364400111?text=Hola!%20Me%20interesa%20el%20iPhone%2015%20128GB%20Negro.%20%C2%BFEst%C3%A1%20disponible%3F" target="_blank" class="phone-cta">Consultar →</a>
+          <div class="phone-actions">
+            <a href="https://wa.me/5493364400111?text=Hola!%20Me%20interesa%20el%20iPhone%2015%20128GB%20Negro.%20%C2%BFEst%C3%A1%20disponible%3F" target="_blank" class="phone-cta">Comprar →</a>
+            <button type="button" class="phone-cta phone-cta-canje" data-stock-id="15-128-negro">Plan Canje</button>
+          </div>
         </div>
 
-        <div class="phone-card fade-in">
+        <div class="phone-card fade-in" data-stock-id="16-128-blanco">
           <span class="phone-badge badge-disponible">Disponible</span>
           <div class="phone-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2.2"/><line x1="10.3" y1="5" x2="13.7" y2="5"/><circle cx="12" cy="19" r="0.6" fill="currentColor" stroke="none"/></svg></div>
           <div>
@@ -720,10 +745,13 @@
             <div class="price-from">Precio</div>
             <div class="price-val">USD 750</div>
           </div>
-          <a href="https://wa.me/5493364400111?text=Hola!%20Me%20interesa%20el%20iPhone%2016%20128GB%20Blanco.%20%C2%BFEst%C3%A1%20disponible%3F" target="_blank" class="phone-cta">Consultar →</a>
+          <div class="phone-actions">
+            <a href="https://wa.me/5493364400111?text=Hola!%20Me%20interesa%20el%20iPhone%2016%20128GB%20Blanco.%20%C2%BFEst%C3%A1%20disponible%3F" target="_blank" class="phone-cta">Comprar →</a>
+            <button type="button" class="phone-cta phone-cta-canje" data-stock-id="16-128-blanco">Plan Canje</button>
+          </div>
         </div>
 
-        <div class="phone-card fade-in">
+        <div class="phone-card fade-in" data-stock-id="17pro-256-azul">
           <span class="phone-badge badge-sellado">✦ SELLADO</span>
           <div class="phone-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8l9-4 9 4-9 4-9-4z"/><path d="M3 8v8l9 4 9-4V8"/><path d="M12 12v8"/></svg></div>
           <div>
@@ -737,10 +765,13 @@
             <div class="price-from">Precio</div>
             <div class="price-val">USD 1350</div>
           </div>
-          <a href="https://wa.me/5493364400111?text=Hola!%20Me%20interesa%20el%20iPhone%2017%20Pro%20256GB%20Azul%20SELLADO.%20%C2%BFEst%C3%A1%20disponible%3F" target="_blank" class="phone-cta">Consultar →</a>
+          <div class="phone-actions">
+            <a href="https://wa.me/5493364400111?text=Hola!%20Me%20interesa%20el%20iPhone%2017%20Pro%20256GB%20Azul%20SELLADO.%20%C2%BFEst%C3%A1%20disponible%3F" target="_blank" class="phone-cta">Comprar →</a>
+            <button type="button" class="phone-cta phone-cta-canje" data-stock-id="17pro-256-azul">Plan Canje</button>
+          </div>
         </div>
 
-        <div class="phone-card fade-in">
+        <div class="phone-card fade-in" data-stock-id="17pro-256-naranja">
           <span class="phone-badge badge-sellado">✦ SELLADO</span>
           <div class="phone-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8l9-4 9 4-9 4-9-4z"/><path d="M3 8v8l9 4 9-4V8"/><path d="M12 12v8"/></svg></div>
           <div>
@@ -754,10 +785,13 @@
             <div class="price-from">Precio</div>
             <div class="price-val">USD 1350</div>
           </div>
-          <a href="https://wa.me/5493364400111?text=Hola!%20Me%20interesa%20el%20iPhone%2017%20Pro%20256GB%20Naranja%20SELLADO.%20%C2%BFEst%C3%A1%20disponible%3F" target="_blank" class="phone-cta">Consultar →</a>
+          <div class="phone-actions">
+            <a href="https://wa.me/5493364400111?text=Hola!%20Me%20interesa%20el%20iPhone%2017%20Pro%20256GB%20Naranja%20SELLADO.%20%C2%BFEst%C3%A1%20disponible%3F" target="_blank" class="phone-cta">Comprar →</a>
+            <button type="button" class="phone-cta phone-cta-canje" data-stock-id="17pro-256-naranja">Plan Canje</button>
+          </div>
         </div>
 
-        <div class="phone-card fade-in">
+        <div class="phone-card fade-in" data-stock-id="17promax-256-blanco">
           <span class="phone-badge badge-sellado">✦ SELLADO</span>
           <div class="phone-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8l9-4 9 4-9 4-9-4z"/><path d="M3 8v8l9 4 9-4V8"/><path d="M12 12v8"/></svg></div>
           <div>
@@ -771,7 +805,10 @@
             <div class="price-from">Precio</div>
             <div class="price-val">USD 1550</div>
           </div>
-          <a href="https://wa.me/5493364400111?text=Hola!%20Me%20interesa%20el%20iPhone%2017%20Pro%20Max%20256GB%20Blanco%20SELLADO.%20%C2%BFEst%C3%A1%20disponible%3F" target="_blank" class="phone-cta">Consultar →</a>
+          <div class="phone-actions">
+            <a href="https://wa.me/5493364400111?text=Hola!%20Me%20interesa%20el%20iPhone%2017%20Pro%20Max%20256GB%20Blanco%20SELLADO.%20%C2%BFEst%C3%A1%20disponible%3F" target="_blank" class="phone-cta">Comprar →</a>
+            <button type="button" class="phone-cta phone-cta-canje" data-stock-id="17promax-256-blanco">Plan Canje</button>
+          </div>
         </div>
 
       </div>
@@ -1161,6 +1198,17 @@
 
     canjeStockSelect.addEventListener('change', calcularCanje);
     canjeTradeSelect.addEventListener('change', calcularCanje);
+
+    // Boton "Plan Canje" en cada phone-card: preselecciona ese modelo
+    // en la calculadora y lleva directo a la seccion.
+    document.querySelectorAll('.phone-cta-canje').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.stockId;
+        canjeStockSelect.value = id;
+        calcularCanje();
+        window.location.hash = 'canje';
+      });
+    });
   </script>
 </body>
 </html>
