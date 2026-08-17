@@ -296,7 +296,7 @@
     .stock-note a { color: var(--gold); }
 
     /* ── Plan Canje ── */
-    .canje { background: var(--bg); }
+    .canje { background: var(--bg); scroll-margin-top: 76px; }
     .canje-header { margin-bottom: 44px; }
     .canje-card {
       background: var(--s2); border: 1px solid var(--border);
@@ -1206,7 +1206,8 @@
         const id = btn.dataset.stockId;
         canjeStockSelect.value = id;
         calcularCanje();
-        window.location.hash = 'canje';
+        document.getElementById('canje').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        history.replaceState(null, '', '#canje');
       });
     });
   </script>
